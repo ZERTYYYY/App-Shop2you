@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Mon Profil</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'profile'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Mon Profil 🚗</h1></div>
+      <button class="btn btn-gold">✏️ Modifier</button>
+    </div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div class="card">
+        <div class="profile-header">
+          <div class="profile-avatar-lg"><%= user.name.charAt(0) %></div>
+          <div>
+            <h2><%= user.name %></h2>
+            <p><%= user.email %></p>
+            <span class="badge badge-blue" style="margin-top:6px">🚗 Livreur</span>
+          </div>
+        </div>
+        <!-- Stats -->
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:16px 0; text-align:center;">
+          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
+            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.trips %></div>
+            <div style="font-size:0.75rem; color:var(--gray)">Courses</div>
+          </div>
+          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
+            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.rating %></div>
+            <div style="font-size:0.75rem; color:var(--gray)">Note</div>
+          </div>
+          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
+            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.time %></div>
+            <div style="font-size:0.75rem; color:var(--gray)">Moy.</div>
+          </div>
+        </div>
+        <div class="profile-row"><span class="plabel">Nom</span><span class="pval"><%= user.name %></span></div>
+        <div class="profile-row"><span class="plabel">Email</span><span class="pval"><%= user.email %></span></div>
+        <div class="profile-row"><span class="plabel">Téléphone</span><span class="pval"><%= user.phone %></span></div>
+        <div class="profile-row"><span class="plabel">Ville</span><span class="pval"><%= user.city %></span></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:24px">
+          <h3 style="margin-bottom:12px">Vérification d'identité</h3>
+          <p style="font-size:0.88rem; margin-bottom:16px">Téléchargez vos documents pour valider votre compte</p>
+          <% ['Passeport','Permis d\'étude','Permis de travail'].forEach((d,i) => { %>
+          <label style="display:flex; align-items:center; gap:10px; padding:10px 0; cursor:pointer;">
+            <input type="radio" name="idtype" <%= i===0?'checked':'' %> style="accent-color:var(--gold)">
+            <span style="font-size:0.9rem"><%= d %></span>
+          </label>
+          <% }) %>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px">
+            <div style="border:2px dashed #ddd; border-radius:12px; padding:24px; text-align:center; cursor:pointer;" onclick="this.style.borderColor='var(--gold)'">
+              <div style="font-size:1.5rem; margin-bottom:8px">📄</div>
+              <div style="font-size:0.8rem; color:var(--gray)">Côté A</div>
+            </div>
+            <div style="border:2px dashed #ddd; border-radius:12px; padding:24px; text-align:center; cursor:pointer;" onclick="this.style.borderColor='var(--gold)'">
+              <div style="font-size:1.5rem; margin-bottom:8px">📷</div>
+              <div style="font-size:0.8rem; color:var(--gray)">Côté B</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:12px">Accès au véhicule</h3>
+          <div style="display:flex; gap:16px; margin-top:8px;">
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="radio" name="vehicle" checked style="accent-color:var(--gold)"> <span>Oui</span>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="radio" name="vehicle" style="accent-color:var(--gold)"> <span>Non</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

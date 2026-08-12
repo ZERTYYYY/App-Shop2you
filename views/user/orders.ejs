@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Mes Commandes</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'orders'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Mes Commandes 📦</h1><p>Suivi de toutes vos commandes</p></div>
+      <a href="/user/dashboard" class="btn btn-gold">+ Nouvelle commande</a>
+    </div>
+
+    <div class="card">
+      <% if(!user.orders || user.orders.length === 0) { %>
+      <div class="empty-state">
+        <div class="emoji">📦</div>
+        <p>Aucune commande pour l'instant.<br>Commencez à faire du shopping !</p>
+        <a href="/user/dashboard" class="btn btn-gold" style="margin-top:16px">Voir la boutique</a>
+      </div>
+      <% } else { %>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>N° Commande</th>
+              <th>Date</th>
+              <th>Articles</th>
+              <th>Total</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% user.orders.forEach(order => { %>
+            <tr>
+              <td><strong><%= order.id %></strong></td>
+              <td><%= order.date %></td>
+              <td style="color:var(--gray); font-size:0.85rem"><%= order.items.join(', ') %></td>
+              <td><strong><%= order.total.toFixed(2) %>€</strong></td>
+              <td>
+                <% if(order.status === 'delivered') { %>
+                  <span class="badge badge-green">✅ Livré</span>
+                <% } else if(order.status === 'cancelled') { %>
+                  <span class="badge badge-red">❌ Annulé</span>
+                <% } else { %>
+                  <span class="badge badge-gold">⏳ En cours</span>
+                <% } %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+      <% } %>
+    </div>
+  </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">🛍️</div>
+    <span>Shop2You</span>
+  </div>
+  <div class="sidebar-user">
+    <div class="avatar"><%= user.name.charAt(0).toUpperCase() %></div>
+    <div class="sidebar-user-info">
+      <div class="name"><%= user.name %></div>
+      <div class="role">
+        <% if(user.role==='user') { %>👤 Client
+        <% } else if(user.role==='delivery') { %>🚗 Livreur
+        <% } else { %>🏪 Vendeur<% } %>
+      </div>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <% if(user.role === 'user') { %>
+      <a href="/user/dashboard" class="nav-item <%= page==='dashboard'?'active':'' %>"><span class="icon">🏠</span> Accueil</a>
+      <a href="/user/orders" class="nav-item <%= page==='orders'?'active':'' %>"><span class="icon">📦</span> Mes commandes</a>
+      <a href="/user/checkout" class="nav-item <%= page==='checkout'?'active':'' %>"><span class="icon">🛒</span> Panier & Paiement</a>
+      <a href="/user/profile" class="nav-item <%= page==='profile'?'active':'' %>"><span class="icon">👤</span> Mon profil</a>
+    <% } else if(user.role === 'delivery') { %>
+      <a href="/delivery/dashboard" class="nav-item <%= page==='dashboard'?'active':'' %>"><span class="icon">🏠</span> Tableau de bord</a>
+      <a href="/delivery/history" class="nav-item <%= page==='history'?'active':'' %>"><span class="icon">📋</span> Historique</a>
+      <a href="/delivery/vehicle" class="nav-item <%= page==='vehicle'?'active':'' %>"><span class="icon">🚗</span> Mon véhicule</a>
+      <a href="/delivery/profile" class="nav-item <%= page==='profile'?'active':'' %>"><span class="icon">👤</span> Mon profil</a>
+    <% } else { %>
+      <a href="/provider/dashboard" class="nav-item <%= page==='dashboard'?'active':'' %>"><span class="icon">🏠</span> Tableau de bord</a>
+      <a href="/provider/invoices" class="nav-item <%= page==='invoices'?'active':'' %>"><span class="icon">🧾</span> Factures</a>
+      <a href="/provider/profile" class="nav-item <%= page==='profile'?'active':'' %>"><span class="icon">👤</span> Mon profil</a>
+    <% } %>
+    <a href="#" class="nav-item"><span class="icon">⚙️</span> Paramètres</a>
+    <a href="#" class="nav-item"><span class="icon">🔒</span> Confidentialité</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="/logout" class="nav-item" style="color:#E74C3C"><span class="icon">🚪</span> Déconnexion</a>
+  </div>
+</div>
+
+<div id="sidebar-overlay" onclick="toggleSidebar()" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:99;"></div>
+
+<script>
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('sidebar-overlay');
+  sb.classList.toggle('open');
+  ov.style.display = sb.classList.contains('open') ? 'block' : 'none';
+}
+</script>

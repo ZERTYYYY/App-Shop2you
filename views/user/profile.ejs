@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Mon Profil</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'profile'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Mon Profil 👤</h1><p>Gérez vos informations personnelles</p></div>
+      <button class="btn btn-gold">✏️ Modifier</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+      <div>
+        <div class="card" style="margin-bottom:24px">
+          <div class="profile-header">
+            <div class="profile-avatar-lg"><%= user.name.charAt(0) %></div>
+            <div>
+              <h2><%= user.name %></h2>
+              <p><%= user.email %></p>
+              <span class="badge badge-gold" style="margin-top:6px">👤 Client</span>
+            </div>
+          </div>
+          <div class="profile-row"><span class="plabel">Nom complet</span><span class="pval"><%= user.name %></span></div>
+          <div class="profile-row"><span class="plabel">Email</span><span class="pval"><%= user.email %></span></div>
+          <div class="profile-row"><span class="plabel">Genre</span><span class="pval"><%= user.gender || 'Non renseigné' %></span></div>
+          <div class="profile-row"><span class="plabel">Téléphone</span><span class="pval"><%= user.phone || 'Non renseigné' %></span></div>
+          <div class="profile-row"><span class="plabel">Ville</span><span class="pval"><%= user.city || 'Non renseignée' %></span></div>
+          <div class="profile-row"><span class="plabel">Adresse</span><span class="pval"><%= user.address || 'Non renseignée' %></span></div>
+        </div>
+      </div>
+
+      <div>
+        <!-- Cards -->
+        <div class="card" style="margin-bottom:24px">
+          <h3 style="margin-bottom:16px">💳 Mes cartes</h3>
+          <% if(user.cards && user.cards.length > 0) { %>
+          <% user.cards.forEach(c => { %>
+          <div class="credit-card" style="margin-bottom:0">
+            <div class="chip">▪▪▪</div>
+            <div class="number"><%= c.number %></div>
+            <div class="bottom">
+              <div><div class="name">Titulaire</div><div class="holder"><%= c.name %></div></div>
+              <div class="visa">VISA</div>
+            </div>
+          </div>
+          <% }) %>
+          <% } else { %>
+          <div class="empty-state"><div class="emoji">💳</div><p>Aucune carte enregistrée</p></div>
+          <% } %>
+          <button class="btn btn-outline btn-full" style="margin-top:14px">+ Ajouter une carte</button>
+        </div>
+
+        <!-- Addresses -->
+        <div class="card">
+          <h3 style="margin-bottom:16px">📍 Mes adresses</h3>
+          <% if(user.addresses && user.addresses.length > 0) { %>
+          <% user.addresses.forEach(a => { %>
+          <div style="padding:12px; background:var(--gray-light); border-radius:10px; margin-bottom:10px;">
+            <div style="font-weight:600; font-size:0.9rem; margin-bottom:4px"><%= a.label %> 📍</div>
+            <div style="font-size:0.85rem; color:var(--gray)"><%= a.address %></div>
+          </div>
+          <% }) %>
+          <% } else { %>
+          <div class="empty-state"><div class="emoji">📍</div><p>Aucune adresse enregistrée</p></div>
+          <% } %>
+          <button class="btn btn-outline btn-full" style="margin-top:10px">+ Ajouter une adresse</button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

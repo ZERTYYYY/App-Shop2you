@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Factures</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'invoices'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Factures 🧾</h1><p>Toutes vos transactions</p></div>
+      <button class="btn btn-gold" onclick="alert('Export PDF à venir !')">📄 Exporter</button>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+      <div class="stat-card">
+        <div class="stat-icon green">💰</div>
+        <div class="stat-info">
+          <div class="value"><%= user.invoices.filter(i=>i.status==='payée').reduce((s,i)=>s+i.amount,0).toFixed(2) %>€</div>
+          <div class="label">Total encaissé</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon gold">⏳</div>
+        <div class="stat-info">
+          <div class="value"><%= user.invoices.filter(i=>i.status==='en attente').reduce((s,i)=>s+i.amount,0).toFixed(2) %>€</div>
+          <div class="label">En attente</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">📊</div>
+        <div class="stat-info"><div class="value"><%= user.invoices.length %></div><div class="label">Total factures</div></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>N° Facture</th><th>Client</th><th>Date</th><th>Montant</th><th>Statut</th><th>Action</th></tr>
+          </thead>
+          <tbody>
+            <% user.invoices.forEach(inv => { %>
+            <tr>
+              <td><strong><%= inv.id %></strong></td>
+              <td><%= inv.client %></td>
+              <td><%= inv.date %></td>
+              <td><strong><%= inv.amount.toFixed(2) %>€</strong></td>
+              <td>
+                <% if(inv.status === 'payée') { %>
+                  <span class="badge badge-green">✅ Payée</span>
+                <% } else { %>
+                  <span class="badge badge-gold">⏳ En attente</span>
+                <% } %>
+              </td>
+              <td><button class="btn btn-outline btn-sm" onclick="alert('Téléchargement à venir !')">⬇️ PDF</button></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

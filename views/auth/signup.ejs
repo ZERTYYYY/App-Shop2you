@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Inscription</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="auth-brand">
+      <div class="logo">🛍️✈️</div>
+      <h1>Shop2You</h1>
+      <p>Rejoignez notre communauté</p>
+    </div>
+  </div>
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <h2>Créer un compte</h2>
+      <p class="subtitle">Rejoignez des milliers d'utilisateurs</p>
+      <% if (error) { %><div class="alert alert-error">⚠️ <%= error %></div><% } %>
+      <form method="POST" action="/signup">
+        <div class="form-group">
+          <label class="form-label">Nom complet</label>
+          <input class="form-input" type="text" name="name" placeholder="Jean Dupont" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse e-mail</label>
+          <input class="form-input" type="email" name="email" placeholder="exemple@gmail.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Mot de passe</label>
+          <input class="form-input" type="password" name="password" placeholder="••••••••" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Vous êtes</label>
+          <select class="form-input form-select" name="role">
+            <option value="user">👤 Client — Je veux acheter</option>
+            <option value="delivery">🚗 Livreur — Je veux livrer</option>
+            <option value="provider">🏪 Vendeur — Je veux vendre</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-gold btn-full btn-lg">Créer mon compte</button>
+      </form>
+      <p style="text-align:center; margin-top:20px; font-size:0.9rem; color:var(--gray)">
+        Déjà un compte ? <a href="/login" style="color:var(--gold-dark); font-weight:600">Se connecter</a>
+      </p>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Boutique</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'dashboard'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title">
+        <h1>Boutique 🛍️</h1>
+        <p>Découvrez nos produits sélectionnés</p>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline" onclick="openCart()">
+          🛒 Panier <span id="cart-count" style="background:var(--gold);color:var(--dark);border-radius:50px;padding:2px 8px;font-size:0.8rem;margin-left:4px"><%= cart.length %></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon gold">🛍️</div>
+        <div class="stat-info"><div class="value"><%= user.orders ? user.orders.length : 0 %></div><div class="label">Commandes passées</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">✅</div>
+        <div class="stat-info"><div class="value"><%= user.orders ? user.orders.filter(o=>o.status==='delivered').length : 0 %></div><div class="label">Livraisons reçues</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">💳</div>
+        <div class="stat-info"><div class="value"><%= user.cards ? user.cards.length : 0 %></div><div class="label">Carte(s) enregistrée(s)</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">📍</div>
+        <div class="stat-info"><div class="value"><%= user.addresses ? user.addresses.length : 0 %></div><div class="label">Adresse(s) sauvegardée(s)</div></div>
+      </div>
+    </div>
+
+    <!-- Search & Filter -->
+    <div class="card" style="margin-bottom:24px; padding:18px 24px;">
+      <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+        <div class="search-wrap" style="flex:1; min-width:200px;">
+          <span class="search-icon">🔍</span>
+          <input class="form-input" id="searchInput" type="text" placeholder="Rechercher un produit..." oninput="filterProducts()" style="padding-left:42px">
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;" id="categoryBtns">
+          <button class="btn btn-gold btn-sm" onclick="filterCat('Tous')">Tous</button>
+          <button class="btn btn-outline btn-sm" onclick="filterCat('Chaussures')">👟 Chaussures</button>
+          <button class="btn btn-outline btn-sm" onclick="filterCat('Vêtements')">👕 Vêtements</button>
+          <button class="btn btn-outline btn-sm" onclick="filterCat('Accessoires')">🧢 Accessoires</button>
+          <button class="btn btn-outline btn-sm" onclick="filterCat('Pantalons')">👖 Pantalons</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="section-header">
+      <h2>Produits disponibles</h2>
+      <span id="product-count" style="color:var(--gray); font-size:0.9rem"></span>
+    </div>
+    <div class="products-grid" id="productsGrid">
+      <% products.forEach(p => { %>
+      <div class="product-card" data-name="<%= p.name.toLowerCase() %>" data-cat="<%= p.category %>">
+        <div class="product-img"><%= p.image %></div>
+        <div class="product-body">
+          <div class="pname"><%= p.name %></div>
+          <div class="prating">⭐ <%= p.rating %> (<%= p.reviews %> avis) · <%= p.provider %></div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+            <div class="pprice"><%= p.price.toFixed(2) %>€</div>
+          </div>
+          <button class="product-add-btn" onclick="addToCart(<%= p.id %>, this)">+ Ajouter au panier</button>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </main>
+</div>
+
+<!-- Cart Panel -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-panel" id="cartPanel">
+  <h2>Mon Panier 🛒 <button onclick="closeCart()" style="background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--gray)">✕</button></h2>
+  <div class="cart-items" id="cartItems">
+    <% if(cart.length === 0) { %>
+    <div class="empty-state">
+      <div class="emoji">🛒</div>
+      <p>Votre panier est vide</p>
+    </div>
+    <% } else { %>
+    <% cart.forEach(item => { %>
+    <div class="cart-item">
+      <div class="cart-item-icon"><%= item.image %></div>
+      <div class="cart-item-info">
+        <div class="name"><%= item.name %></div>
+        <div class="price"><%= item.price.toFixed(2) %>€ × <%= item.qty %></div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(<%= item.id %>)">🗑️</button>
+    </div>
+    <% }) %>
+    <% } %>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span>Total</span>
+      <span><%= cart.reduce((s,i) => s+i.price*i.qty, 0).toFixed(2) %>€</span>
+    </div>
+    <a href="/user/checkout" class="btn btn-gold btn-full btn-lg">Commander →</a>
+  </div>
+</div>
+
+<script>
+let currentCat = 'Tous';
+
+function filterProducts() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.product-card');
+  let visible = 0;
+  cards.forEach(c => {
+    const matchName = c.dataset.name.includes(q);
+    const matchCat = currentCat === 'Tous' || c.dataset.cat === currentCat;
+    if (matchName && matchCat) { c.style.display = ''; visible++; }
+    else c.style.display = 'none';
+  });
+  document.getElementById('product-count').textContent = visible + ' produit(s)';
+}
+
+function filterCat(cat) {
+  currentCat = cat;
+  document.querySelectorAll('#categoryBtns .btn').forEach(b => {
+    b.className = 'btn btn-sm ' + (b.textContent.includes(cat) || (cat==='Tous' && b.textContent==='Tous') ? 'btn-gold' : 'btn-outline');
+  });
+  filterProducts();
+}
+
+function addToCart(id, btn) {
+  btn.textContent = '⏳ Ajout...';
+  btn.disabled = true;
+  fetch('/user/cart/add', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ productId: id })
+  }).then(r => r.json()).then(d => {
+    if (d.success) {
+      btn.textContent = '✅ Ajouté !';
+      document.getElementById('cart-count').textContent = d.cartCount;
+      setTimeout(() => { btn.textContent = '+ Ajouter au panier'; btn.disabled = false; }, 1500);
+    }
+  });
+}
+
+function removeFromCart(id) {
+  fetch('/user/cart/remove', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ productId: id })
+  }).then(() => location.reload());
+}
+
+function openCart() { document.getElementById('cartOverlay').classList.add('open'); document.getElementById('cartPanel').classList.add('open'); }
+function closeCart() { document.getElementById('cartOverlay').classList.remove('open'); document.getElementById('cartPanel').classList.remove('open'); }
+
+// Init count
+document.addEventListener('DOMContentLoaded', () => filterProducts());
+</script>
+</body>
+</html>

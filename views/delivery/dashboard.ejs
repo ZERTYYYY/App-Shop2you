@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Livreur</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <% const page = 'dashboard'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Tableau de bord 🚗</h1><p>Vos missions du jour</p></div>
+      <div style="display:flex; align-items:center; gap:8px; background:rgba(46,204,113,0.1); padding:8px 16px; border-radius:50px; border:1px solid rgba(46,204,113,0.3);">
+        <span class="status-dot green"></span>
+        <span style="font-size:0.9rem; font-weight:600; color:#1a9e52">Disponible</span>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon gold">🏎️</div>
+        <div class="stat-info"><div class="value"><%= user.stats.trips %></div><div class="label">Courses totales</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">⭐</div>
+        <div class="stat-info"><div class="value"><%= user.stats.rating %></div><div class="label">Note moyenne</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon blue">⏱️</div>
+        <div class="stat-info"><div class="value"><%= user.stats.time %></div><div class="label">Temps moyen</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon red">📋</div>
+        <div class="stat-info"><div class="value"><%= user.jobs.length %></div><div class="label">Missions aujourd'hui</div></div>
+      </div>
+    </div>
+
+    <div class="section-header"><h2>Missions en cours</h2></div>
+    <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:32px;">
+      <% user.jobs.forEach(job => { %>
+      <div class="job-card">
+        <div class="job-icon">📦</div>
+        <div class="job-info">
+          <div class="client"><%= job.client %></div>
+          <div class="addr">📍 <%= job.address %></div>
+          <div style="margin-top:6px; display:flex; gap:8px; align-items:center;">
+            <% if(job.status === 'en cours') { %>
+              <span class="badge badge-gold">🔄 En cours</span>
+            <% } else { %>
+              <span class="badge badge-blue">⏳ En attente</span>
+            <% } %>
+            <span style="font-size:0.82rem; color:var(--gray)">🕐 <%= job.time %></span>
+          </div>
+        </div>
+        <div class="job-actions">
+          <span style="font-weight:700; color:var(--gold-dark); font-size:1.05rem"><%= job.amount.toFixed(2) %>€</span>
+          <% if(job.status === 'en attente') { %>
+          <button class="btn btn-gold btn-sm" onclick="acceptJob(this)">Accepter</button>
+          <% } else { %>
+          <button class="btn btn-dark btn-sm" onclick="finishJob(this)">Livré ✓</button>
+          <% } %>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+
+    <!-- Earnings chart area -->
+    <div class="card">
+      <h3 style="margin-bottom:4px">💰 Gains de la semaine</h3>
+      <p style="margin-bottom:20px">Votre activité des 7 derniers jours</p>
+      <div style="display:flex; align-items:flex-end; gap:10px; height:120px;">
+        <% const days = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']; %>
+        <% const vals = [45, 72, 38, 89, 60, 95, 52]; %>
+        <% const max = Math.max(...vals); %>
+        <% days.forEach((d,i) => { %>
+        <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:6px;">
+          <span style="font-size:0.75rem; color:var(--gray); font-weight:600"><%= vals[i] %>€</span>
+          <div style="width:100%; border-radius:6px 6px 0 0; background:linear-gradient(135deg, var(--gold), var(--gold-dark)); height:<%= Math.round((vals[i]/max)*100) %>px; transition:height 0.5s ease;"></div>
+          <span style="font-size:0.78rem; color:var(--gray)"><%= d %></span>
+        </div>
+        <% }) %>
+      </div>
+      <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--gray-light); display:flex; justify-content:space-between;">
+        <div><span style="color:var(--gray); font-size:0.85rem">Total semaine</span><div style="font-size:1.3rem; font-weight:800; color:var(--gold-dark)">451€</div></div>
+        <div style="text-align:right"><span style="color:var(--gray); font-size:0.85rem">Moyenne/jour</span><div style="font-size:1.3rem; font-weight:800">64.4€</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+function acceptJob(btn) {
+  btn.textContent = '✅ Accepté';
+  btn.className = 'btn btn-dark btn-sm';
+  btn.onclick = function() { finishJob(this); };
+  btn.previousElementSibling && (btn.previousElementSibling.className = 'badge badge-gold');
+}
+function finishJob(btn) {
+  const card = btn.closest('.job-card');
+  card.style.opacity = '0.5';
+  btn.textContent = '✓ Livré';
+  btn.disabled = true;
+}
+</script>
+</body>
+</html>
