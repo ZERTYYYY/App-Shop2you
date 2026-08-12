@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Historique</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Historique' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'history'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Historique 📋</h1><p>Toutes vos livraisons passées</p></div>
+    <div class="mb-8">
+      <h1>Historique</h1>
+      <p class="text-muted text-sm mt-1">Toutes vos livraisons passées</p>
     </div>
-    <div class="card">
+    <div class="card !p-0 overflow-hidden">
       <div class="table-wrap">
-        <table>
+        <table class="table-base">
           <thead>
-            <tr><th>N°</th><th>Client</th><th>Date</th><th>Montant</th><th>Statut</th></tr>
+            <tr><th class="th-cell">N°</th><th class="th-cell">Client</th><th class="th-cell">Date</th><th class="th-cell">Montant</th><th class="th-cell">Statut</th></tr>
           </thead>
           <tbody>
             <% user.history.forEach(h => { %>
             <tr>
-              <td><strong><%= h.id %></strong></td>
-              <td><%= h.client %></td>
-              <td><%= h.date %></td>
-              <td><strong><%= h.amount.toFixed(2) %>€</strong></td>
-              <td>
+              <td class="td-cell font-medium"><%= h.id %></td>
+              <td class="td-cell"><%= h.client %></td>
+              <td class="td-cell text-muted"><%= h.date %></td>
+              <td class="td-cell font-medium"><%= h.amount.toFixed(2) %>€</td>
+              <td class="td-cell">
                 <% if(h.status === 'livré') { %>
-                  <span class="badge badge-green">✅ Livré</span>
+                  <span class="badge-success"><%- icon('check','w-3.5 h-3.5') %> Livré</span>
                 <% } else { %>
-                  <span class="badge badge-red">❌ Annulé</span>
+                  <span class="badge-danger"><%- icon('cross','w-3.5 h-3.5') %> Annulé</span>
                 <% } %>
               </td>
             </tr>

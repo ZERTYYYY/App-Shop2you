@@ -3,7 +3,7 @@ services:
     name: shop2you
     env: node
     plan: free
-    buildCommand: npm install
+    buildCommand: npm install && npm run build:css
     startCommand: npm start
     envVars:
       - key: SESSION_SECRET

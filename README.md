@@ -1,6 +1,6 @@
 # 🛍️ Shop2You
 
-Marketplace & livraison — application web avec trois espaces (client, livreur, vendeur), construite avec Node.js, Express et EJS.
+Marketplace & livraison — application web avec trois espaces (client, livreur, vendeur), construite avec Node.js, Express, EJS et Tailwind CSS.
 
 ## Prérequis
 
@@ -19,6 +19,8 @@ npm install
 ```bash
 npm start
 ```
+
+Le CSS Tailwind (`public/css/style.css`) est un fichier généré : `npm start`/`npm run dev` le reconstruisent automatiquement avant de lancer le serveur (scripts `prestart`/`predev`), pas besoin de l'appeler à la main. Pour retoucher le design, éditer [`src/tailwind.css`](src/tailwind.css) ou les classes dans `views/*.ejs`, puis relancer, ou utiliser `npm run watch:css` en parallèle pour une reconstruction continue.
 
 L'application est accessible sur **http://localhost:3000**.
 
@@ -53,7 +55,7 @@ L'app est prête pour un déploiement sur [Render](https://render.com) (offre gr
 
 1. Crée un compte sur [render.com](https://render.com) (connexion possible avec GitHub).
 2. Dans le dashboard, clique sur **New +** → **Blueprint**.
-3. Sélectionne le repo `App-Shop2you`. Render détecte automatiquement `render.yaml` et propose un service web `shop2you` (plan Free, build `npm install`, start `npm start`).
+3. Sélectionne le repo `App-Shop2you`. Render détecte automatiquement `render.yaml` et propose un service web `shop2you` (plan Free, build `npm install && npm run build:css`, start `npm start`).
 4. Valide — Render génère aussi une variable `SESSION_SECRET` aléatoire automatiquement.
 5. Au bout de quelques minutes, l'app est disponible sur une URL du type `https://shop2you.onrender.com`.
 
@@ -66,6 +68,7 @@ L'app est prête pour un déploiement sur [Render](https://render.com) (offre gr
 - [Express](https://expressjs.com/) — serveur web
 - [EJS](https://ejs.co/) — moteur de templates (rendu côté serveur)
 - [express-session](https://www.npmjs.com/package/express-session) — authentification par session
+- [Tailwind CSS](https://tailwindcss.com/) — design system (compilé via la Tailwind CLI, pas de CDN)
 
 ## Documentation
 

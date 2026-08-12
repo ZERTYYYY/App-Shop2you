@@ -1,121 +1,117 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Paiement</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Paiement' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'checkout'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Paiement 💳</h1><p>Finalisez votre commande</p></div>
+    <div class="mb-8">
+      <h1>Paiement</h1>
+      <p class="text-muted text-sm mt-1">Finalisez votre commande</p>
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start;">
+    <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
       <!-- Left: Payment form -->
       <div>
         <!-- Credit card visual -->
-        <div class="credit-card" id="cardPreview">
-          <div class="chip">▪▪▪</div>
-          <div class="number" id="previewNumber">**** **** **** ****</div>
-          <div class="bottom">
+        <div class="rounded-2xl p-6 mb-6 bg-ink text-cream relative overflow-hidden" id="cardPreview">
+          <div class="absolute w-40 h-40 rounded-full bg-accent/20 -top-16 -right-16"></div>
+          <div class="w-9 h-7 rounded-md bg-cream/25 mb-6"></div>
+          <div class="text-lg tracking-widest font-mono mb-5" id="previewNumber">**** **** **** ****</div>
+          <div class="flex justify-between items-end">
             <div>
-              <div class="name">Nom du titulaire</div>
-              <div class="holder" id="previewName">PRENOM NOM</div>
+              <div class="text-xs text-cream/50">Nom du titulaire</div>
+              <div class="font-medium" id="previewName">PRENOM NOM</div>
             </div>
-            <div class="visa">VISA</div>
+            <div class="font-serif italic text-xl text-cream/80">VISA</div>
           </div>
         </div>
 
         <div class="card">
-          <h3 style="margin-bottom:20px">Informations de paiement</h3>
-          <form method="POST" action="/user/checkout/confirm">
-            <div class="form-group">
-              <label class="form-label">Nom du titulaire</label>
-              <input class="form-input" type="text" name="cardName" placeholder="Suzanne Pertus"
+          <h3 class="mb-5">Informations de paiement</h3>
+          <form method="POST" action="/user/checkout/confirm" class="space-y-4">
+            <div>
+              <label class="field-label">Nom du titulaire</label>
+              <input class="input" type="text" name="cardName" placeholder="Suzanne Pertus"
                 oninput="document.getElementById('previewName').textContent = this.value.toUpperCase() || 'PRENOM NOM'"
                 value="<%= user.cards && user.cards[0] ? user.cards[0].name : '' %>">
             </div>
-            <div class="form-group">
-              <label class="form-label">Numéro de carte</label>
-              <input class="form-input" type="text" name="cardNumber" placeholder="1111 2222 3333 4444" maxlength="19"
+            <div>
+              <label class="field-label">Numéro de carte</label>
+              <input class="input" type="text" name="cardNumber" placeholder="1111 2222 3333 4444" maxlength="19"
                 oninput="formatCard(this)"
                 value="<%= user.cards && user.cards[0] ? user.cards[0].number : '' %>">
             </div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Date d'expiration</label>
-                <input class="form-input" type="text" name="expiry" placeholder="MM/AA" maxlength="5"
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="field-label">Date d'expiration</label>
+                <input class="input" type="text" name="expiry" placeholder="MM/AA" maxlength="5"
                   value="<%= user.cards && user.cards[0] ? user.cards[0].expiry : '' %>">
               </div>
-              <div class="form-group">
-                <label class="form-label">CVV</label>
-                <input class="form-input" type="text" name="cvv" placeholder="•••" maxlength="3">
+              <div>
+                <label class="field-label">CVV</label>
+                <input class="input" type="text" name="cvv" placeholder="•••" maxlength="3">
               </div>
             </div>
 
-            <h3 style="margin:20px 0 14px">Adresse de livraison</h3>
+            <h3 class="!mt-7 mb-3">Adresse de livraison</h3>
             <% if(user.addresses && user.addresses.length > 0) { %>
+            <div class="space-y-2.5">
             <% user.addresses.forEach((addr, i) => { %>
-            <label style="display:flex; align-items:flex-start; gap:12px; padding:14px; border:2px solid #E8E8E8; border-radius:12px; margin-bottom:10px; cursor:pointer; transition:border-color 0.2s;"
-              onmouseover="this.style.borderColor='var(--gold)'" onmouseout="this.style.borderColor='#E8E8E8'">
-              <input type="radio" name="address" value="<%= i %>" <%= i===0?'checked':'' %> style="margin-top:2px; accent-color:var(--gold)">
+            <label class="flex items-start gap-3 p-3.5 border border-border rounded-xl cursor-pointer hover:border-accent transition-colors">
+              <input type="radio" name="address" value="<%= i %>" <%= i===0?'checked':'' %> class="mt-1 accent-accent">
               <div>
-                <div style="font-weight:600; font-size:0.9rem"><%= addr.label %> 📍</div>
-                <div style="font-size:0.85rem; color:var(--gray); margin-top:2px"><%= addr.address %></div>
+                <div class="font-medium text-sm"><%= addr.label %></div>
+                <div class="text-sm text-muted mt-0.5"><%= addr.address %></div>
               </div>
             </label>
             <% }) %>
+            </div>
             <% } else { %>
-            <input class="form-input" type="text" name="customAddress" placeholder="Entrez votre adresse de livraison">
+            <input class="input" type="text" name="customAddress" placeholder="Entrez votre adresse de livraison">
             <% } %>
 
-            <button type="submit" class="btn btn-gold btn-full btn-lg" style="margin-top:24px">
-              💳 Payer <%= total %>€
-            </button>
+            <button type="submit" class="btn-accent btn-full btn-lg !mt-7">Payer <%= total %>€</button>
           </form>
         </div>
       </div>
 
       <!-- Right: Order summary -->
-      <div>
-        <div class="card">
-          <h3 style="margin-bottom:16px">Récapitulatif</h3>
-          <% if(cart.length === 0) { %>
-          <div class="empty-state">
-            <div class="emoji">🛒</div>
-            <p>Votre panier est vide</p>
-            <a href="/user/dashboard" class="btn btn-gold btn-sm" style="margin-top:12px">Faire du shopping</a>
-          </div>
-          <% } else { %>
-          <% cart.forEach(item => { %>
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--gray-light);">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size:1.5rem"><%= item.image %></span>
-              <div>
-                <div style="font-size:0.88rem; font-weight:500"><%= item.name %></div>
-                <div style="font-size:0.8rem; color:var(--gray)">Qté: <%= item.qty %></div>
-              </div>
-            </div>
-            <strong><%= (item.price * item.qty).toFixed(2) %>€</strong>
-          </div>
-          <% }) %>
-
-          <div style="padding:14px 0; display:flex; justify-content:space-between; color:var(--gray); font-size:0.9rem;">
-            <span>Sous-total</span><span><%= total %>€</span>
-          </div>
-          <div style="padding:0 0 14px; display:flex; justify-content:space-between; color:var(--gray); font-size:0.9rem;">
-            <span>Livraison</span><span style="color:var(--green)">Gratuit</span>
-          </div>
-          <div style="padding:14px 0; display:flex; justify-content:space-between; font-weight:800; font-size:1.1rem; border-top:2px solid var(--gray-light);">
-            <span>Total</span><span style="color:var(--gold-dark)"><%= total %>€</span>
-          </div>
-          <% } %>
+      <div class="card">
+        <h3 class="mb-4">Récapitulatif</h3>
+        <% if(cart.length === 0) { %>
+        <div class="empty-state">
+          <div class="text-muted mb-2"><%- icon('cart', 'w-7 h-7 mx-auto') %></div>
+          <p>Votre panier est vide</p>
+          <a href="/user/dashboard" class="btn-accent btn-sm mt-3">Faire du shopping</a>
         </div>
+        <% } else { %>
+        <div class="divide-y divide-border">
+        <% cart.forEach(item => { %>
+        <div class="flex items-center justify-between py-3 first:pt-0">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl"><%= item.image %></span>
+            <div>
+              <div class="text-sm font-medium"><%= item.name %></div>
+              <div class="text-xs text-muted">Qté: <%= item.qty %></div>
+            </div>
+          </div>
+          <span class="font-medium text-sm"><%= (item.price * item.qty).toFixed(2) %>€</span>
+        </div>
+        <% }) %>
+        </div>
+
+        <div class="pt-4 flex justify-between text-sm text-muted">
+          <span>Sous-total</span><span><%= total %>€</span>
+        </div>
+        <div class="pb-4 flex justify-between text-sm text-muted">
+          <span>Livraison</span><span class="text-success">Gratuit</span>
+        </div>
+        <div class="pt-4 border-t border-border flex justify-between font-semibold text-lg">
+          <span>Total</span><span class="text-accent-dark"><%= total %>€</span>
+        </div>
+        <% } %>
       </div>
     </div>
   </main>

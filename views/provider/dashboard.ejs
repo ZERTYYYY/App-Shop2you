@@ -1,70 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Vendeur</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Vendeur' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'dashboard'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Tableau de bord 🏪</h1><p><%= user.shopName %></p></div>
-      <button class="btn btn-gold" onclick="alert('Fonctionnalité à venir !')">+ Ajouter un produit</button>
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      <div>
+        <h1>Tableau de bord</h1>
+        <p class="text-muted text-sm mt-1"><%= user.shopName %></p>
+      </div>
+      <button class="btn-accent" onclick="alert('Fonctionnalité à venir !')"><%- icon('plus','w-4 h-4') %> Ajouter un produit</button>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon gold">📦</div>
-        <div class="stat-info"><div class="value"><%= user.products.length %></div><div class="label">Produits en vente</div></div>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="card !p-5 flex items-center gap-3.5">
+        <div class="stat-icon bg-accent-light text-accent-dark"><%- icon('box','w-5 h-5') %></div>
+        <div><div class="text-xl font-semibold"><%= user.products.length %></div><div class="text-xs text-muted">Produits en vente</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon green">💰</div>
-        <div class="stat-info"><div class="value"><%= user.invoices.filter(i=>i.status==='payée').length %></div><div class="label">Factures payées</div></div>
+      <div class="card !p-5 flex items-center gap-3.5">
+        <div class="stat-icon bg-success-light text-success"><%- icon('wallet','w-5 h-5') %></div>
+        <div><div class="text-xl font-semibold"><%= user.invoices.filter(i=>i.status==='payée').length %></div><div class="text-xs text-muted">Factures payées</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon blue">📈</div>
-        <div class="stat-info"><div class="value"><%= user.products.reduce((s,p)=>s+p.sales,0) %></div><div class="label">Ventes totales</div></div>
+      <div class="card !p-5 flex items-center gap-3.5">
+        <div class="stat-icon bg-warning-light text-warning"><%- icon('trending','w-5 h-5') %></div>
+        <div><div class="text-xl font-semibold"><%= user.products.reduce((s,p)=>s+p.sales,0) %></div><div class="text-xs text-muted">Ventes totales</div></div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon red">💳</div>
-        <div class="stat-info">
-          <div class="value"><%= user.invoices.filter(i=>i.status==='payée').reduce((s,i)=>s+i.amount,0).toFixed(0) %>€</div>
-          <div class="label">Revenus totaux</div>
-        </div>
+      <div class="card !p-5 flex items-center gap-3.5">
+        <div class="stat-icon bg-danger-light text-danger"><%- icon('card','w-5 h-5') %></div>
+        <div><div class="text-xl font-semibold"><%= user.invoices.filter(i=>i.status==='payée').reduce((s,i)=>s+i.amount,0).toFixed(0) %>€</div><div class="text-xs text-muted">Revenus totaux</div></div>
       </div>
     </div>
 
     <!-- Products table -->
-    <div class="card" style="margin-bottom:24px">
-      <div class="section-header">
+    <div class="card !p-0 overflow-hidden mb-6">
+      <div class="flex items-center justify-between px-6 pt-6 pb-4">
         <h3>Mes produits</h3>
-        <span class="badge badge-gold"><%= user.products.length %> produits</span>
+        <span class="badge-accent"><%= user.products.length %> produits</span>
       </div>
       <div class="table-wrap">
-        <table>
+        <table class="table-base">
           <thead>
-            <tr><th>Produit</th><th>Catégorie</th><th>Prix</th><th>Stock</th><th>Ventes</th><th>Action</th></tr>
+            <tr><th class="th-cell">Produit</th><th class="th-cell">Catégorie</th><th class="th-cell">Prix</th><th class="th-cell">Stock</th><th class="th-cell">Ventes</th><th class="th-cell">Action</th></tr>
           </thead>
           <tbody>
             <% user.products.forEach(p => { %>
             <tr>
-              <td><div style="display:flex; align-items:center; gap:10px;"><span style="font-size:1.5rem"><%= p.image %></span><strong><%= p.name %></strong></div></td>
-              <td><span class="badge badge-gray"><%= p.category %></span></td>
-              <td><strong><%= p.price.toFixed(2) %>€</strong></td>
-              <td>
+              <td class="td-cell"><div class="flex items-center gap-3"><span class="text-2xl"><%= p.image %></span><span class="font-medium"><%= p.name %></span></div></td>
+              <td class="td-cell"><span class="badge-neutral"><%= p.category %></span></td>
+              <td class="td-cell font-medium"><%= p.price.toFixed(2) %>€</td>
+              <td class="td-cell">
                 <% if(p.stock <= 5) { %>
-                  <span style="color:var(--red); font-weight:600"><%= p.stock %> ⚠️</span>
+                  <span class="text-danger font-medium"><%= p.stock %> ⚠</span>
                 <% } else { %>
                   <span><%= p.stock %></span>
                 <% } %>
               </td>
-              <td><span class="badge badge-green">+<%= p.sales %></span></td>
-              <td>
-                <button class="btn btn-outline btn-sm" onclick="alert('Modification à venir !')">✏️</button>
+              <td class="td-cell"><span class="badge-success">+<%= p.sales %></span></td>
+              <td class="td-cell">
+                <button class="btn-outline btn-sm" onclick="alert('Modification à venir !')"><%- icon('pencil','w-3.5 h-3.5') %></button>
               </td>
             </tr>
             <% }) %>
@@ -74,28 +69,28 @@
     </div>
 
     <!-- Recent invoices -->
-    <div class="card">
-      <div class="section-header">
+    <div class="card !p-0 overflow-hidden">
+      <div class="flex items-center justify-between px-6 pt-6 pb-4">
         <h3>Dernières factures</h3>
-        <a href="/provider/invoices" style="color:var(--gold-dark); font-size:0.88rem; font-weight:600; text-decoration:none">Voir tout →</a>
+        <a href="/provider/invoices" class="text-accent-dark text-sm font-medium hover:underline">Voir tout →</a>
       </div>
       <div class="table-wrap">
-        <table>
+        <table class="table-base">
           <thead>
-            <tr><th>N° Facture</th><th>Client</th><th>Date</th><th>Montant</th><th>Statut</th></tr>
+            <tr><th class="th-cell">N° Facture</th><th class="th-cell">Client</th><th class="th-cell">Date</th><th class="th-cell">Montant</th><th class="th-cell">Statut</th></tr>
           </thead>
           <tbody>
             <% user.invoices.slice(0,3).forEach(inv => { %>
             <tr>
-              <td><strong><%= inv.id %></strong></td>
-              <td><%= inv.client %></td>
-              <td><%= inv.date %></td>
-              <td><strong><%= inv.amount.toFixed(2) %>€</strong></td>
-              <td>
+              <td class="td-cell font-medium"><%= inv.id %></td>
+              <td class="td-cell"><%= inv.client %></td>
+              <td class="td-cell text-muted"><%= inv.date %></td>
+              <td class="td-cell font-medium"><%= inv.amount.toFixed(2) %>€</td>
+              <td class="td-cell">
                 <% if(inv.status === 'payée') { %>
-                  <span class="badge badge-green">✅ Payée</span>
+                  <span class="badge-success"><%- icon('check','w-3.5 h-3.5') %> Payée</span>
                 <% } else { %>
-                  <span class="badge badge-gold">⏳ En attente</span>
+                  <span class="badge-warning"><%- icon('clock','w-3.5 h-3.5') %> En attente</span>
                 <% } %>
               </td>
             </tr>

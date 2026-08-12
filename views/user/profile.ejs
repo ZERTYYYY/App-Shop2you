@@ -1,76 +1,79 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Mon Profil</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Mon Profil' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'profile'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Mon Profil 👤</h1><p>Gérez vos informations personnelles</p></div>
-      <button class="btn btn-gold">✏️ Modifier</button>
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      <div>
+        <h1>Mon profil</h1>
+        <p class="text-muted text-sm mt-1">Gérez vos informations personnelles</p>
+      </div>
+      <button class="btn-accent"><%- icon('pencil', 'w-4 h-4') %> Modifier</button>
     </div>
 
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
-      <div>
-        <div class="card" style="margin-bottom:24px">
-          <div class="profile-header">
-            <div class="profile-avatar-lg"><%= user.name.charAt(0) %></div>
-            <div>
-              <h2><%= user.name %></h2>
-              <p><%= user.email %></p>
-              <span class="badge badge-gold" style="margin-top:6px">👤 Client</span>
-            </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="card">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-16 h-16 rounded-full bg-accent flex items-center justify-center font-serif text-2xl text-white shrink-0"><%= user.name.charAt(0) %></div>
+          <div>
+            <h2 class="text-xl"><%= user.name %></h2>
+            <p class="text-sm text-muted"><%= user.email %></p>
+            <span class="badge-accent mt-1.5">Client</span>
           </div>
-          <div class="profile-row"><span class="plabel">Nom complet</span><span class="pval"><%= user.name %></span></div>
-          <div class="profile-row"><span class="plabel">Email</span><span class="pval"><%= user.email %></span></div>
-          <div class="profile-row"><span class="plabel">Genre</span><span class="pval"><%= user.gender || 'Non renseigné' %></span></div>
-          <div class="profile-row"><span class="plabel">Téléphone</span><span class="pval"><%= user.phone || 'Non renseigné' %></span></div>
-          <div class="profile-row"><span class="plabel">Ville</span><span class="pval"><%= user.city || 'Non renseignée' %></span></div>
-          <div class="profile-row"><span class="plabel">Adresse</span><span class="pval"><%= user.address || 'Non renseignée' %></span></div>
+        </div>
+        <div class="divide-y divide-border text-sm">
+          <div class="flex justify-between py-2.5"><span class="text-muted">Nom complet</span><span class="font-medium"><%= user.name %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Email</span><span class="font-medium"><%= user.email %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Genre</span><span class="font-medium"><%= user.gender || 'Non renseigné' %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Téléphone</span><span class="font-medium"><%= user.phone || 'Non renseigné' %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Ville</span><span class="font-medium"><%= user.city || 'Non renseignée' %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Adresse</span><span class="font-medium"><%= user.address || 'Non renseignée' %></span></div>
         </div>
       </div>
 
-      <div>
+      <div class="space-y-6">
         <!-- Cards -->
-        <div class="card" style="margin-bottom:24px">
-          <h3 style="margin-bottom:16px">💳 Mes cartes</h3>
+        <div class="card">
+          <h3 class="mb-4">Mes cartes</h3>
           <% if(user.cards && user.cards.length > 0) { %>
+          <div class="space-y-3">
           <% user.cards.forEach(c => { %>
-          <div class="credit-card" style="margin-bottom:0">
-            <div class="chip">▪▪▪</div>
-            <div class="number"><%= c.number %></div>
-            <div class="bottom">
-              <div><div class="name">Titulaire</div><div class="holder"><%= c.name %></div></div>
-              <div class="visa">VISA</div>
+          <div class="rounded-xl p-5 bg-ink text-cream relative overflow-hidden">
+            <div class="absolute w-28 h-28 rounded-full bg-accent/20 -top-10 -right-10"></div>
+            <div class="w-8 h-6 rounded-md bg-cream/25 mb-4"></div>
+            <div class="font-mono tracking-widest text-sm mb-4"><%= c.number %></div>
+            <div class="flex justify-between items-end">
+              <div><div class="text-xs text-cream/50">Titulaire</div><div class="font-medium text-sm"><%= c.name %></div></div>
+              <div class="font-serif italic text-cream/80">VISA</div>
             </div>
           </div>
           <% }) %>
+          </div>
           <% } else { %>
-          <div class="empty-state"><div class="emoji">💳</div><p>Aucune carte enregistrée</p></div>
+          <div class="empty-state"><p>Aucune carte enregistrée</p></div>
           <% } %>
-          <button class="btn btn-outline btn-full" style="margin-top:14px">+ Ajouter une carte</button>
+          <button class="btn-outline btn-full mt-4"><%- icon('plus','w-4 h-4') %> Ajouter une carte</button>
         </div>
 
         <!-- Addresses -->
         <div class="card">
-          <h3 style="margin-bottom:16px">📍 Mes adresses</h3>
+          <h3 class="mb-4">Mes adresses</h3>
           <% if(user.addresses && user.addresses.length > 0) { %>
+          <div class="space-y-2.5">
           <% user.addresses.forEach(a => { %>
-          <div style="padding:12px; background:var(--gray-light); border-radius:10px; margin-bottom:10px;">
-            <div style="font-weight:600; font-size:0.9rem; margin-bottom:4px"><%= a.label %> 📍</div>
-            <div style="font-size:0.85rem; color:var(--gray)"><%= a.address %></div>
+          <div class="p-3.5 bg-cream rounded-xl">
+            <div class="font-medium text-sm mb-0.5"><%= a.label %></div>
+            <div class="text-sm text-muted"><%= a.address %></div>
           </div>
           <% }) %>
+          </div>
           <% } else { %>
-          <div class="empty-state"><div class="emoji">📍</div><p>Aucune adresse enregistrée</p></div>
+          <div class="empty-state"><p>Aucune adresse enregistrée</p></div>
           <% } %>
-          <button class="btn btn-outline btn-full" style="margin-top:10px">+ Ajouter une adresse</button>
+          <button class="btn-outline btn-full mt-4"><%- icon('plus','w-4 h-4') %> Ajouter une adresse</button>
         </div>
       </div>
     </div>

@@ -1,79 +1,77 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Mon Profil</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Mon Profil' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'profile'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Mon Profil 🚗</h1></div>
-      <button class="btn btn-gold">✏️ Modifier</button>
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      <h1>Mon profil</h1>
+      <button class="btn-accent"><%- icon('pencil','w-4 h-4') %> Modifier</button>
     </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="card">
-        <div class="profile-header">
-          <div class="profile-avatar-lg"><%= user.name.charAt(0) %></div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-16 h-16 rounded-full bg-accent flex items-center justify-center font-serif text-2xl text-white shrink-0"><%= user.name.charAt(0) %></div>
           <div>
-            <h2><%= user.name %></h2>
-            <p><%= user.email %></p>
-            <span class="badge badge-blue" style="margin-top:6px">🚗 Livreur</span>
+            <h2 class="text-xl"><%= user.name %></h2>
+            <p class="text-sm text-muted"><%= user.email %></p>
+            <span class="badge-accent mt-1.5">Livreur</span>
           </div>
         </div>
-        <!-- Stats -->
-        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:16px 0; text-align:center;">
-          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
-            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.trips %></div>
-            <div style="font-size:0.75rem; color:var(--gray)">Courses</div>
+        <div class="grid grid-cols-3 gap-3 mb-5 text-center">
+          <div class="bg-cream rounded-xl p-3">
+            <div class="text-lg font-semibold"><%= user.stats.trips %></div>
+            <div class="text-xs text-muted">Courses</div>
           </div>
-          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
-            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.rating %></div>
-            <div style="font-size:0.75rem; color:var(--gray)">Note</div>
+          <div class="bg-cream rounded-xl p-3">
+            <div class="text-lg font-semibold"><%= user.stats.rating %></div>
+            <div class="text-xs text-muted">Note</div>
           </div>
-          <div style="background:var(--gray-light); border-radius:10px; padding:12px;">
-            <div style="font-size:1.3rem; font-weight:800"><%= user.stats.time %></div>
-            <div style="font-size:0.75rem; color:var(--gray)">Moy.</div>
+          <div class="bg-cream rounded-xl p-3">
+            <div class="text-lg font-semibold"><%= user.stats.time %></div>
+            <div class="text-xs text-muted">Moy.</div>
           </div>
         </div>
-        <div class="profile-row"><span class="plabel">Nom</span><span class="pval"><%= user.name %></span></div>
-        <div class="profile-row"><span class="plabel">Email</span><span class="pval"><%= user.email %></span></div>
-        <div class="profile-row"><span class="plabel">Téléphone</span><span class="pval"><%= user.phone %></span></div>
-        <div class="profile-row"><span class="plabel">Ville</span><span class="pval"><%= user.city %></span></div>
+        <div class="divide-y divide-border text-sm">
+          <div class="flex justify-between py-2.5"><span class="text-muted">Nom</span><span class="font-medium"><%= user.name %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Email</span><span class="font-medium"><%= user.email %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Téléphone</span><span class="font-medium"><%= user.phone %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Ville</span><span class="font-medium"><%= user.city %></span></div>
+        </div>
       </div>
-      <div>
-        <div class="card" style="margin-bottom:24px">
-          <h3 style="margin-bottom:12px">Vérification d'identité</h3>
-          <p style="font-size:0.88rem; margin-bottom:16px">Téléchargez vos documents pour valider votre compte</p>
+      <div class="space-y-6">
+        <div class="card">
+          <h3 class="mb-2">Vérification d'identité</h3>
+          <p class="text-sm mb-4">Téléchargez vos documents pour valider votre compte</p>
+          <div class="space-y-1">
           <% ['Passeport','Permis d\'étude','Permis de travail'].forEach((d,i) => { %>
-          <label style="display:flex; align-items:center; gap:10px; padding:10px 0; cursor:pointer;">
-            <input type="radio" name="idtype" <%= i===0?'checked':'' %> style="accent-color:var(--gold)">
-            <span style="font-size:0.9rem"><%= d %></span>
+          <label class="flex items-center gap-2.5 py-2 cursor-pointer">
+            <input type="radio" name="idtype" <%= i===0?'checked':'' %> class="accent-accent">
+            <span class="text-sm"><%= d %></span>
           </label>
           <% }) %>
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:16px">
-            <div style="border:2px dashed #ddd; border-radius:12px; padding:24px; text-align:center; cursor:pointer;" onclick="this.style.borderColor='var(--gold)'">
-              <div style="font-size:1.5rem; margin-bottom:8px">📄</div>
-              <div style="font-size:0.8rem; color:var(--gray)">Côté A</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3 mt-4">
+            <div class="border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-accent transition-colors">
+              <div class="text-muted mb-2"><%- icon('file','w-6 h-6 mx-auto') %></div>
+              <div class="text-xs text-muted">Côté A</div>
             </div>
-            <div style="border:2px dashed #ddd; border-radius:12px; padding:24px; text-align:center; cursor:pointer;" onclick="this.style.borderColor='var(--gold)'">
-              <div style="font-size:1.5rem; margin-bottom:8px">📷</div>
-              <div style="font-size:0.8rem; color:var(--gray)">Côté B</div>
+            <div class="border-2 border-dashed border-border rounded-xl p-6 text-center cursor-pointer hover:border-accent transition-colors">
+              <div class="text-muted mb-2"><%- icon('upload','w-6 h-6 mx-auto') %></div>
+              <div class="text-xs text-muted">Côté B</div>
             </div>
           </div>
         </div>
         <div class="card">
-          <h3 style="margin-bottom:12px">Accès au véhicule</h3>
-          <div style="display:flex; gap:16px; margin-top:8px;">
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="radio" name="vehicle" checked style="accent-color:var(--gold)"> <span>Oui</span>
+          <h3 class="mb-3">Accès au véhicule</h3>
+          <div class="flex gap-6">
+            <label class="flex items-center gap-2 cursor-pointer text-sm">
+              <input type="radio" name="vehicle" checked class="accent-accent"> Oui
             </label>
-            <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="radio" name="vehicle" style="accent-color:var(--gold)"> <span>Non</span>
+            <label class="flex items-center gap-2 cursor-pointer text-sm">
+              <input type="radio" name="vehicle" class="accent-accent"> Non
             </label>
           </div>
         </div>

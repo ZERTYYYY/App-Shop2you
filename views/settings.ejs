@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Paramètres</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('partials/head', { title: 'Paramètres' }) %>
 <body>
 <div class="app-shell">
   <%- include('partials/sidebar', {user, page: 'settings'}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Paramètres ⚙️</h1><p>Gérez vos préférences</p></div>
+    <div class="mb-8">
+      <h1>Paramètres</h1>
+      <p class="text-muted text-sm mt-1">Gérez vos préférences</p>
     </div>
 
-    <div class="card" style="margin-bottom:24px">
-      <h3 style="margin-bottom:16px">Notifications</h3>
-      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
-        <span class="plabel">Notifications par e-mail</span>
-        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
-      </label>
-      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
-        <span class="plabel">Notifications push</span>
-        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
-      </label>
-      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
-        <span class="plabel">Offres promotionnelles</span>
-        <input type="checkbox" style="accent-color:var(--gold); width:18px; height:18px;">
-      </label>
+    <div class="card mb-6">
+      <h3 class="mb-4">Notifications</h3>
+      <div class="divide-y divide-border">
+        <label class="flex justify-between items-center py-3 cursor-pointer">
+          <span class="text-sm">Notifications par e-mail</span>
+          <input type="checkbox" checked class="w-4 h-4 accent-accent">
+        </label>
+        <label class="flex justify-between items-center py-3 cursor-pointer">
+          <span class="text-sm">Notifications push</span>
+          <input type="checkbox" checked class="w-4 h-4 accent-accent">
+        </label>
+        <label class="flex justify-between items-center py-3 cursor-pointer">
+          <span class="text-sm">Offres promotionnelles</span>
+          <input type="checkbox" class="w-4 h-4 accent-accent">
+        </label>
+      </div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:16px">Préférences</h3>
-      <div class="profile-row"><span class="plabel">Langue</span><span class="pval">Français 🇫🇷</span></div>
-      <div class="profile-row"><span class="plabel">Devise</span><span class="pval">EUR (€)</span></div>
-      <div class="profile-row"><span class="plabel">Thème</span><span class="pval">Clair ☀️</span></div>
+      <h3 class="mb-4">Préférences</h3>
+      <div class="divide-y divide-border text-sm">
+        <div class="flex justify-between py-2.5"><span class="text-muted">Langue</span><span class="font-medium">Français</span></div>
+        <div class="flex justify-between py-2.5"><span class="text-muted">Devise</span><span class="font-medium">EUR (€)</span></div>
+        <div class="flex justify-between py-2.5"><span class="text-muted">Thème</span><span class="font-medium">Clair</span></div>
+      </div>
     </div>
   </main>
 </div>

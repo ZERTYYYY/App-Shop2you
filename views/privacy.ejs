@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Confidentialité</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('partials/head', { title: 'Confidentialité' }) %>
 <body>
 <div class="app-shell">
   <%- include('partials/sidebar', {user, page: 'privacy'}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Confidentialité 🔒</h1><p>Gérez vos données personnelles</p></div>
+    <div class="mb-8">
+      <h1>Confidentialité</h1>
+      <p class="text-muted text-sm mt-1">Gérez vos données personnelles</p>
     </div>
 
-    <div class="card" style="margin-bottom:24px">
-      <h3 style="margin-bottom:16px">Vos données</h3>
-      <p style="margin-bottom:16px">Shop2You est une démo : vos informations (profil, commandes, panier) sont conservées uniquement le temps de la session et ne sont partagées avec aucun tiers.</p>
-      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
-        <span class="plabel">Partager mon activité pour améliorer les recommandations</span>
-        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
-      </label>
-      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
-        <span class="plabel">Autoriser la localisation pour les livraisons</span>
-        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
-      </label>
+    <div class="card mb-6">
+      <h3 class="mb-3">Vos données</h3>
+      <p class="text-sm mb-4">Shop2You est une démo : vos informations (profil, commandes, panier) sont conservées uniquement le temps de la session et ne sont partagées avec aucun tiers.</p>
+      <div class="divide-y divide-border">
+        <label class="flex justify-between items-center py-3 cursor-pointer">
+          <span class="text-sm">Partager mon activité pour améliorer les recommandations</span>
+          <input type="checkbox" checked class="w-4 h-4 accent-accent">
+        </label>
+        <label class="flex justify-between items-center py-3 cursor-pointer">
+          <span class="text-sm">Autoriser la localisation pour les livraisons</span>
+          <input type="checkbox" checked class="w-4 h-4 accent-accent">
+        </label>
+      </div>
     </div>
 
     <div class="card">
-      <h3 style="margin-bottom:16px">Compte</h3>
-      <div class="profile-row"><span class="plabel">Télécharger mes données</span>
-        <button class="btn btn-outline btn-sm" onclick="alert('Export à venir !')">⬇️ Exporter</button>
-      </div>
-      <div class="profile-row"><span class="plabel">Supprimer mon compte</span>
-        <button class="btn btn-outline btn-sm" style="color:var(--red); border-color:var(--red)" onclick="alert('Suppression à venir !')">🗑️ Supprimer</button>
+      <h3 class="mb-4">Compte</h3>
+      <div class="divide-y divide-border">
+        <div class="flex justify-between items-center py-3">
+          <span class="text-sm">Télécharger mes données</span>
+          <button class="btn-outline btn-sm" onclick="alert('Export à venir !')"><%- icon('download','w-3.5 h-3.5') %> Exporter</button>
+        </div>
+        <div class="flex justify-between items-center py-3">
+          <span class="text-sm">Supprimer mon compte</span>
+          <button class="btn-danger-outline btn-sm" onclick="alert('Suppression à venir !')"><%- icon('trash','w-3.5 h-3.5') %> Supprimer</button>
+        </div>
       </div>
     </div>
   </main>

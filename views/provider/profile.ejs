@@ -1,51 +1,53 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Mon Profil Vendeur</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Mon Profil Vendeur' }) %>
 <body>
 <div class="app-shell">
   <% const page = 'profile'; %>
   <%- include('../partials/sidebar', {user, page}) %>
   <main class="main-content">
-    <div class="topbar">
-      <div class="topbar-title"><h1>Mon Profil 🏪</h1><p>Informations de votre boutique</p></div>
-      <button class="btn btn-gold">✏️ Modifier</button>
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      <div>
+        <h1>Mon profil</h1>
+        <p class="text-muted text-sm mt-1">Informations de votre boutique</p>
+      </div>
+      <button class="btn-accent"><%- icon('pencil','w-4 h-4') %> Modifier</button>
     </div>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px;">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div class="card">
-        <div class="profile-header">
-          <div class="profile-avatar-lg"><%= user.name.charAt(0) %></div>
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-16 h-16 rounded-full bg-accent flex items-center justify-center font-serif text-2xl text-white shrink-0"><%= user.name.charAt(0) %></div>
           <div>
-            <h2><%= user.name %></h2>
-            <p style="color:var(--gold-dark); font-weight:600"><%= user.shopName %></p>
-            <span class="badge badge-gold" style="margin-top:6px">🏪 Vendeur</span>
+            <h2 class="text-xl"><%= user.name %></h2>
+            <p class="text-sm text-accent-dark font-medium"><%= user.shopName %></p>
+            <span class="badge-accent mt-1.5">Vendeur</span>
           </div>
         </div>
-        <div class="profile-row"><span class="plabel">Nom de la boutique</span><span class="pval"><%= user.shopName %></span></div>
-        <div class="profile-row"><span class="plabel">Propriétaire</span><span class="pval"><%= user.name %></span></div>
-        <div class="profile-row"><span class="plabel">Email</span><span class="pval"><%= user.email %></span></div>
-        <div class="profile-row"><span class="plabel">Téléphone</span><span class="pval"><%= user.phone %></span></div>
-        <div class="profile-row"><span class="plabel">Ville</span><span class="pval"><%= user.city %></span></div>
-        <div class="profile-row"><span class="plabel">Adresse</span><span class="pval"><%= user.address %></span></div>
+        <div class="divide-y divide-border text-sm">
+          <div class="flex justify-between py-2.5"><span class="text-muted">Nom de la boutique</span><span class="font-medium"><%= user.shopName %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Propriétaire</span><span class="font-medium"><%= user.name %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Email</span><span class="font-medium"><%= user.email %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Téléphone</span><span class="font-medium"><%= user.phone %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Ville</span><span class="font-medium"><%= user.city %></span></div>
+          <div class="flex justify-between py-2.5"><span class="text-muted">Adresse</span><span class="font-medium"><%= user.address %></span></div>
+        </div>
       </div>
       <div class="card">
-        <h3 style="margin-bottom:16px">Performance boutique</h3>
+        <h3 class="mb-4">Performance boutique</h3>
         <% const perfs = [
-          {label:'Taux de satisfaction', val:'97%', icon:'⭐'},
-          {label:'Temps moyen de traitement', val:'1.2 jours', icon:'⏱️'},
-          {label:'Commandes ce mois', val:'23', icon:'📦'},
-          {label:'Retours', val:'2%', icon:'🔄'},
+          {label:'Taux de satisfaction', val:'97%'},
+          {label:'Temps moyen de traitement', val:'1.2 jours'},
+          {label:'Commandes ce mois', val:'23'},
+          {label:'Retours', val:'2%'},
         ] %>
+        <div class="divide-y divide-border text-sm">
         <% perfs.forEach(p => { %>
-        <div class="profile-row">
-          <span class="plabel"><%= p.icon %> <%= p.label %></span>
-          <strong style="color:var(--gold-dark)"><%= p.val %></strong>
+        <div class="flex justify-between py-2.5">
+          <span class="text-muted"><%= p.label %></span>
+          <span class="font-semibold text-accent-dark"><%= p.val %></span>
         </div>
         <% }) %>
+        </div>
       </div>
     </div>
   </main>

@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Commande confirmée</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body>
-<div class="checkout-done-page">
-  <div>
-    <div class="done-circle">✅</div>
-    <h1 style="font-size:2rem; margin-bottom:10px">We are waiting for you</h1>
-    <p style="color:var(--gray); font-size:1rem; margin-bottom:6px">Votre commande <strong style="color:var(--gold)"><%= orderId %></strong></p>
-    <p style="color:var(--gray); margin-bottom:40px">est confirmée et en cours de préparation !</p>
-    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-      <a href="/user/orders" class="btn btn-outline btn-lg">📦 Mes commandes</a>
-      <a href="/user/dashboard" class="btn btn-gold btn-lg">🛍️ Continuer</a>
-    </div>
+<%- include('../partials/head', { title: 'Commande confirmée' }) %>
+<body class="min-h-screen flex items-center justify-center p-6">
+<div class="text-center max-w-md">
+  <div class="w-20 h-20 rounded-full bg-success-light text-success flex items-center justify-center mx-auto mb-6">
+    <%- icon('check', 'w-9 h-9') %>
+  </div>
+  <h1 class="text-3xl mb-3">On s'occupe de tout</h1>
+  <p class="text-muted mb-1">Votre commande <strong class="text-accent-dark font-medium"><%= orderId %></strong></p>
+  <p class="text-muted mb-8">est confirmée et en cours de préparation !</p>
+  <div class="flex gap-3 justify-center flex-wrap">
+    <a href="/user/orders" class="btn-outline btn-lg">Mes commandes</a>
+    <a href="/user/dashboard" class="btn-accent btn-lg">Continuer</a>
   </div>
 </div>
 </body>

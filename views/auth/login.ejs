@@ -1,74 +1,73 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop2You — Connexion</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
+<%- include('../partials/head', { title: 'Connexion' }) %>
 <body>
-<div class="auth-page">
-  <div class="auth-left">
-    <div class="auth-brand">
-      <div class="logo">🛍️✈️</div>
-      <h1>Shop2You</h1>
-      <p>La marketplace qui livre à votre porte ou dans votre Frigo.</p>
-      <div style="margin-top:40px; display:flex; gap:32px; justify-content:center;">
-        <div style="text-align:center">
-          <div style="font-size:2rem; font-weight:800; color:var(--gold)">500+</div>
-          <div style="font-size:0.8rem; color:var(--gray)">Vendeurs</div>
+<div class="min-h-screen flex">
+  <!-- Left: brand -->
+  <div class="hidden lg:flex lg:w-5/12 bg-ink text-cream flex-col justify-between p-12">
+    <div class="flex items-center gap-2.5">
+      <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white font-serif font-semibold text-sm">S2</div>
+      <span class="font-serif text-lg font-semibold">Shop2You</span>
+    </div>
+    <div>
+      <h1 class="text-4xl leading-tight mb-4 text-cream">La marketplace qui&nbsp;livre<br>à votre porte.</h1>
+      <p class="text-cream/50 max-w-sm">Achetez, vendez, livrez — une seule plateforme pour les clients, les vendeurs et les livreurs.</p>
+      <div class="flex gap-10 mt-10">
+        <div>
+          <div class="font-serif text-2xl text-accent-light">500+</div>
+          <div class="text-xs text-cream/40 mt-1">Vendeurs</div>
         </div>
-        <div style="text-align:center">
-          <div style="font-size:2rem; font-weight:800; color:var(--gold)">10k</div>
-          <div style="font-size:0.8rem; color:var(--gray)">Clients</div>
+        <div>
+          <div class="font-serif text-2xl text-accent-light">10k</div>
+          <div class="text-xs text-cream/40 mt-1">Clients</div>
         </div>
-        <div style="text-align:center">
-          <div style="font-size:2rem; font-weight:800; color:var(--gold)">99%</div>
-          <div style="font-size:0.8rem; color:var(--gray)">Satisfaction</div>
+        <div>
+          <div class="font-serif text-2xl text-accent-light">99%</div>
+          <div class="text-xs text-cream/40 mt-1">Satisfaction</div>
         </div>
       </div>
     </div>
+    <p class="text-xs text-cream/30">© 2026 Shop2You — Démo</p>
   </div>
 
-  <div class="auth-right">
-    <div class="auth-form-wrap">
-      <h2>Bon retour ! 👋</h2>
-      <p class="subtitle">Connectez-vous à votre compte</p>
+  <!-- Right: form -->
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-10">
+    <div class="w-full max-w-sm">
+      <div class="lg:hidden flex items-center gap-2.5 mb-8">
+        <div class="w-9 h-9 rounded-full bg-accent flex items-center justify-center text-white font-serif font-semibold text-sm">S2</div>
+        <span class="font-serif text-lg font-semibold">Shop2You</span>
+      </div>
+
+      <h2 class="mb-1">Bon retour</h2>
+      <p class="text-muted text-sm mb-6">Connectez-vous à votre compte</p>
 
       <% if (error) { %>
-        <div class="alert alert-error">⚠️ <%= error %></div>
+        <div class="mb-5 rounded-xl bg-danger-light text-danger text-sm px-4 py-3"><%= error %></div>
       <% } %>
 
-      <div class="demo-accounts">
-        <p>🎯 Comptes démo (cliquez pour remplir)</p>
-        <button class="demo-btn" onclick="fillDemo('user@shop2you.com','123456')">👤 Client</button>
-        <button class="demo-btn" onclick="fillDemo('livreur@shop2you.com','123456')">🚗 Livreur</button>
-        <button class="demo-btn" onclick="fillDemo('vendeur@shop2you.com','123456')">🏪 Vendeur</button>
+      <div class="mb-6 rounded-xl border border-border p-4">
+        <p class="text-xs font-medium uppercase tracking-wide text-muted mb-3">Comptes démo</p>
+        <div class="flex flex-wrap gap-2">
+          <button type="button" class="badge-neutral hover:border-ink transition-colors" onclick="fillDemo('user@shop2you.com','123456')">Client</button>
+          <button type="button" class="badge-neutral hover:border-ink transition-colors" onclick="fillDemo('livreur@shop2you.com','123456')">Livreur</button>
+          <button type="button" class="badge-neutral hover:border-ink transition-colors" onclick="fillDemo('vendeur@shop2you.com','123456')">Vendeur</button>
+        </div>
       </div>
 
-      <form method="POST" action="/login">
-        <div class="form-group">
-          <label class="form-label">Adresse e-mail</label>
-          <input class="form-input" type="email" name="email" id="email" placeholder="exemple@gmail.com" required autocomplete="email">
+      <form method="POST" action="/login" class="space-y-4">
+        <div>
+          <label class="field-label" for="email">Adresse e-mail</label>
+          <input class="input" type="email" name="email" id="email" placeholder="exemple@gmail.com" required autocomplete="email">
         </div>
-        <div class="form-group">
-          <label class="form-label">Mot de passe</label>
-          <input class="form-input" type="password" name="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+        <div>
+          <label class="field-label" for="password">Mot de passe</label>
+          <input class="input" type="password" name="password" id="password" placeholder="••••••••" required autocomplete="current-password">
         </div>
-        <button type="submit" class="btn btn-gold btn-full btn-lg" style="margin-bottom:16px">Se connecter</button>
+        <button type="submit" class="btn-accent btn-full btn-lg !mt-6">Se connecter</button>
       </form>
 
-      <div class="divider"><span>ou continuer avec</span></div>
-
-      <div class="social-btns">
-        <button class="social-btn">🔵 Google</button>
-        <button class="social-btn">📘 Facebook</button>
-        <button class="social-btn">🍎 Apple</button>
-      </div>
-
-      <p style="text-align:center; margin-top:24px; font-size:0.9rem; color:var(--gray)">
-        Pas encore de compte ? <a href="/signup" style="color:var(--gold-dark); font-weight:600">S'inscrire</a>
+      <p class="text-center text-sm text-muted mt-6">
+        Pas encore de compte ? <a href="/signup" class="text-accent-dark font-medium hover:underline">S'inscrire</a>
       </p>
     </div>
   </div>

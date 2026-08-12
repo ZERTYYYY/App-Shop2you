@@ -19,13 +19,17 @@ C'est une app **monolithique server-rendered** (pas de frontend séparé type Re
 | Moteur de vues | [EJS](https://ejs.co/) 3.1 (fichiers `.ejs`) |
 | Session / Auth | `express-session` (session en mémoire, cookie 24h) |
 | Données | Mock data en mémoire (aucune base de données) |
-| CSS | Feuille de style unique, écrite à la main (pas de framework CSS) |
+| CSS | [Tailwind CSS](https://tailwindcss.com/) 3, compilé via la Tailwind CLI (pas de CDN) vers `public/css/style.css` |
 
-Dépendances (`package.json`) : `express`, `express-session`, `ejs`.
+Dépendances (`package.json`) : `express`, `express-session`, `ejs`. Dev dependency : `tailwindcss`.
 
 Scripts :
-- `npm start` → `node server.js`
-- `npm run dev` → `nodemon server.js` (rechargement auto)
+- `npm start` → reconstruit le CSS (`prestart`) puis `node server.js`
+- `npm run dev` → reconstruit le CSS (`predev`) puis `nodemon server.js` (rechargement auto)
+- `npm run build:css` → compile `src/tailwind.css` vers `public/css/style.css` (minifié)
+- `npm run watch:css` → recompile en continu pendant qu'on édite le design
+
+`public/css/style.css` est un **fichier généré**, ignoré par git (`.gitignore`) — ne pas l'éditer à la main, il est écrasé à chaque build.
 
 ## Démarrage
 
@@ -50,9 +54,16 @@ Le serveur écoute sur `http://localhost:3000` (ou `process.env.PORT`).
 shop2you-app/
 ├── server.js              # Point d'entrée unique : toutes les routes Express
 ├── package.json
+├── tailwind.config.js     # Palette, polices, contenu scanné (views/**/*.ejs)
+├── src/
+│   └── tailwind.css       # Source Tailwind (@tailwind + composants @layer)
+├── lib/
+│   └── icons.js            # Petit set d'icônes SVG inline, exposé aux vues via app.locals.icon
 ├── data/
 │   └── mockData.js        # "Base de données" en mémoire : users[] et products[]
 ├── views/                 # Templates EJS
+│   ├── settings.ejs        # Page Paramètres (commune aux 3 rôles)
+│   ├── privacy.ejs         # Page Confidentialité (commune aux 3 rôles)
 │   ├── auth/
 │   │   ├── login.ejs
 │   │   └── signup.ejs
@@ -72,10 +83,11 @@ shop2you-app/
 │   │   ├── invoices.ejs
 │   │   └── profile.ejs
 │   └── partials/
-│       └── sidebar.ejs    # Navigation latérale, changeante selon le rôle
+│       ├── head.ejs        # <head> commun (fonts, lien CSS), inclus par chaque page avec { title }
+│       └── sidebar.ejs     # Navigation latérale, changeante selon le rôle
 └── public/
     └── css/
-        style.css          # Styles globaux (604 lignes)
+        style.css          # Généré par Tailwind — ne pas éditer directement
 ```
 
 > Note : le dossier `Shop2you/` à la racine est une copie plus ancienne du projet avec son propre dépôt git imbriqué (et un sous-dossier `Shopopop/`). Il ne fait pas partie de l'app active servie par `server.js` — c'est probablement un reliquat à nettoyer ou archiver. De même, un dossier au nom littéral `{public/{css,js,images},views/{user,delivery,provider,auth},routes,data}` traîne à la racine : c'est un artefact d'une commande `mkdir` mal interprétée (accolades non développées), sans contenu utile.
@@ -113,6 +125,10 @@ shop2you-app/
 ### Espace Vendeur (`/provider/*`, rôle `provider`)
 - `GET /provider/dashboard`, `/profile`, `/invoices`
 
+### Communes (tout rôle connecté)
+- `GET /settings` — page Paramètres
+- `GET /privacy` — page Confidentialité
+
 Le **panier** vit uniquement en session (`req.session.cart`), donc il n'est pas persistant côté "base de données" et est propre à chaque session navigateur.
 
 ## Modèle de données (mock)
@@ -129,9 +145,10 @@ Tout est statique/en dur : pas d'écriture persistante sauf en mémoire process 
 
 ## Interface
 
-- La sidebar (`views/partials/sidebar.ejs`) adapte ses liens de navigation selon `user.role`, avec un menu burger responsive (`toggleSidebar()`) pour mobile.
-- Les icônes utilisent des emojis plutôt qu'une librairie d'icônes.
-- Style visuel via `public/css/style.css`, sans framework (pas de Bootstrap/Tailwind).
+- **Design system Tailwind** : palette chaleureuse/éditoriale définie dans `tailwind.config.js` (crème `cream`, encre `ink`, accent terracotta `accent`, + `success`/`warning`/`danger`). Typo mixte : `Fraunces` (serif, titres) + `Inter` (sans-serif, corps de texte), chargées via Google Fonts dans `views/partials/head.ejs`.
+- Les composants récurrents (`.card`, `.btn-*`, `.badge-*`, `.input`, `.nav-link`, tables...) sont définis une fois dans `src/tailwind.css` via `@layer components`, puis réutilisés dans les vues — évite de dupliquer des dizaines de classes utilitaires partout.
+- **Icônes** : petit set SVG inline maison (`lib/icons.js`, exposé comme `icon()` dans toutes les vues via `app.locals.icon`) pour la navigation et les actions UI. Les emojis produits (`👟`, `🧢`...) viennent des données mock et sont conservés tels quels.
+- La sidebar (`views/partials/sidebar.ejs`) est en fond sombre (`ink`), adapte ses liens selon `user.role`, et devient un panneau off-canvas sur mobile (`toggleSidebar()`, bouton `.menu-toggle` fixe).
 - Textes/labels en français (l'app cible un public francophone, ex. Lyon dans les données de démo).
 
 ## Limites connues / points à garder en tête
