@@ -2,11 +2,13 @@
 
 ## Vue d'ensemble
 
-**Shop2You** est une application web de type marketplace & livraison (façon Uber Eats / Amazon), construite comme un prototype/démo. Elle gère trois profils d'utilisateurs différents avec chacun son propre tableau de bord :
+**Shop2You** est une application web de type marketplace & livraison multi-catégories (façon Glovo), construite comme un prototype/démo. Elle gère trois profils d'utilisateurs différents avec chacun son propre tableau de bord :
 
-- 👤 **User (Client)** — parcourt des produits, gère un panier, passe commande, consulte ses commandes.
+- 👤 **User (Client)** — parcourt des magasins par catégorie (Tout, Alimentaire, Restauration, Cosmétique, Mode), consulte les produits d'un magasin, gère un panier, passe commande, consulte ses commandes.
 - 🚗 **Delivery (Livreur)** — voit ses courses en cours, son historique, gère son véhicule.
 - 🏪 **Provider (Vendeur)** — gère ses produits, ses factures, son profil boutique.
+
+> Les enseignes (Carrefour, Leclerc, McDonald's, Sephora...) sont des noms réels utilisés à titre d'exemple pour la démo ; leurs "logos" sont des badges générés (initiales + couleur), pas de vraies images de marque — voir la section Interface.
 
 C'est une app **monolithique server-rendered** (pas de frontend séparé type React/Vue) : Express génère le HTML côté serveur avec le moteur de templates EJS.
 
@@ -68,7 +70,8 @@ shop2you-app/
 │   │   ├── login.ejs
 │   │   └── signup.ejs
 │   ├── user/
-│   │   ├── dashboard.ejs
+│   │   ├── dashboard.ejs       # Grille de magasins + filtre par catégorie
+│   │   ├── store.ejs           # Produits d'un magasin donné
 │   │   ├── orders.ejs
 │   │   ├── checkout.ejs
 │   │   ├── checkout-done.ejs
@@ -84,7 +87,8 @@ shop2you-app/
 │   │   └── profile.ejs
 │   └── partials/
 │       ├── head.ejs        # <head> commun (fonts, lien CSS), inclus par chaque page avec { title }
-│       └── sidebar.ejs     # Navigation latérale, changeante selon le rôle
+│       ├── sidebar.ejs     # Navigation latérale, changeante selon le rôle
+│       └── cart-panel.ejs  # Panneau panier + JS (add/remove/render), partagé dashboard + store
 └── public/
     └── css/
         style.css          # Généré par Tailwind — ne pas éditer directement
@@ -110,7 +114,8 @@ shop2you-app/
 - `GET /logout`
 
 ### Espace Client (`/user/*`, rôle `user`)
-- `GET /user/dashboard` — liste des produits (`products` de mockData) + panier
+- `GET /user/dashboard` — grille de magasins (`stores`), filtrable par catégorie (`categories`) et recherche par nom, + panier
+- `GET /user/store/:id` — produits d'un magasin (`products.filter(p => p.storeId === store.id)`) ; redirige vers le dashboard si l'id n'existe pas
 - `GET /user/profile`
 - `GET /user/orders` — historique de commandes (stocké sur l'objet `user`)
 - `GET /user/checkout` — panier + total
@@ -133,15 +138,17 @@ Le **panier** vit uniquement en session (`req.session.cart`), donc il n'est pas 
 
 ## Modèle de données (mock)
 
-Défini dans `data/mockData.js`, deux tableaux exportés :
+Défini dans `data/mockData.js`, quatre exports :
 
 - **`users`** — chaque utilisateur a `id`, `role`, `email`, `password`, `name`, et des champs spécifiques au rôle :
   - `user` : `orders[]`, `cards[]`, `addresses[]`
   - `delivery` : `stats{}`, `vehicle{}`, `jobs[]` (courses en cours), `history[]`
-  - `provider` : `shopName`, `products[]`, `invoices[]`
-- **`products`** — catalogue global affiché aux clients (`id`, `name`, `price`, `category`, `image` (emoji), `rating`, `reviews`, `provider`, `description`)
+  - `provider` : `shopName`, `products[]`, `invoices[]` — **catalogue distinct** de son propre inventaire (dashboard vendeur), sans lien avec `products` ci-dessous
+- **`categories`** — `{ id, label }`, ex. `{ id: 'alimentaire', label: 'Alimentaire' }`, utilisées pour les onglets de filtre du dashboard client
+- **`stores`** — les enseignes/magasins : `{ id, name, category, initials, color, rating, time }`. `initials`/`color` servent à générer le badge-logo (pas de vraie image de marque)
+- **`products`** — catalogue global affiché aux clients, chaque produit rattaché à un magasin via `storeId` : `{ id, storeId, name, price, category, image (emoji), rating, reviews, provider, description }`
 
-Tout est statique/en dur : pas d'écriture persistante sauf en mémoire process (perdu au redémarrage).
+Tout est statique/en dur : pas d'écriture persistante sauf en mémoire process (perdu au redémarrage). Le panier référence directement les objets de `products` par `id`, donc les identifiants doivent rester uniques sur l'ensemble du catalogue (tous magasins confondus).
 
 ## Interface
 

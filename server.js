@@ -1,7 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
-const { users, products } = require('./data/mockData');
+const { users, products, stores, categories } = require('./data/mockData');
 const { icon } = require('./lib/icons');
 
 const app = express();
@@ -81,7 +81,14 @@ app.get('/privacy', requireAuth, (req, res) => {
 
 // ─── USER ────────────────────────────────────────────────────────────
 app.get('/user/dashboard', requireRole('user'), (req, res) => {
-  res.render('user/dashboard', { user: req.session.user, products, cart: req.session.cart || [] });
+  res.render('user/dashboard', { user: req.session.user, stores, categories, cart: req.session.cart || [] });
+});
+
+app.get('/user/store/:id', requireRole('user'), (req, res) => {
+  const store = stores.find(s => s.id == req.params.id);
+  if (!store) return res.redirect('/user/dashboard');
+  const storeProducts = products.filter(p => p.storeId === store.id);
+  res.render('user/store', { user: req.session.user, store, storeProducts, cart: req.session.cart || [] });
 });
 
 app.get('/user/profile', requireRole('user'), (req, res) => {

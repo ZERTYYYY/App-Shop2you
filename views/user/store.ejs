@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<%- include('../partials/head', { title: store.name }) %>
+<body>
+<div class="app-shell">
+  <% const page = 'dashboard'; %>
+  <%- include('../partials/sidebar', {user, page}) %>
+
+  <main class="main-content">
+    <a href="/user/dashboard" class="inline-flex items-center gap-1.5 text-sm text-muted hover:text-ink mb-6">
+      <%- icon('chevron', 'w-4 h-4 rotate-180') %> Retour aux magasins
+    </a>
+
+    <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-semibold shrink-0" style="background:<%= store.color %>"><%= store.initials %></div>
+        <div>
+          <h1><%= store.name %></h1>
+          <div class="text-sm text-muted mt-1 flex items-center gap-1.5">
+            <span class="flex items-center gap-0.5">★ <%= store.rating %></span>
+            <span>·</span>
+            <span><%= store.time %></span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-outline" onclick="openCart()">
+        <%- icon('cart', 'w-4 h-4') %> Panier
+        <span id="cart-count" class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full bg-accent text-white text-xs font-semibold"><%= cart.reduce((s,i)=>s+i.qty,0) %></span>
+      </button>
+    </div>
+
+    <% if(storeProducts.length === 0) { %>
+    <div class="card empty-state">
+      <p>Ce magasin n'a pas encore de produits en ligne.</p>
+    </div>
+    <% } else { %>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <% storeProducts.forEach(p => { %>
+      <div class="card !p-0 overflow-hidden flex flex-col">
+        <div class="h-36 flex items-center justify-center text-6xl bg-cream"><%= p.image %></div>
+        <div class="p-5 flex flex-col flex-1">
+          <div class="font-medium text-sm mb-1"><%= p.name %></div>
+          <div class="text-xs text-muted mb-3">★ <%= p.rating %> (<%= p.reviews %> avis) · <%= p.category %></div>
+          <div class="flex items-center justify-between mt-auto pt-2">
+            <div class="font-serif text-lg text-accent-dark"><%= p.price.toFixed(2) %>€</div>
+          </div>
+          <button class="btn-primary btn-full btn-sm mt-3" onclick="addToCart(<%= p.id %>, this)"><%- icon('plus', 'w-3.5 h-3.5') %> Ajouter au panier</button>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } %>
+  </main>
+</div>
+
+<%- include('../partials/cart-panel', { cart }) %>
+</body>
+</html>

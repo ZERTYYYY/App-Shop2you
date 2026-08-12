@@ -1,0 +1,96 @@
+<!-- Cart Panel -->
+<div class="sidebar-overlay" id="cartOverlay" onclick="closeCart()" style="z-index:200"></div>
+<div class="fixed top-0 right-0 bottom-0 z-[201] w-full sm:w-96 bg-paper translate-x-full transition-transform duration-300 flex flex-col p-6" id="cartPanel">
+  <div class="flex items-center justify-between mb-6">
+    <h2>Mon panier</h2>
+    <button onclick="closeCart()" class="text-muted hover:text-ink"><%- icon('close', 'w-5 h-5') %></button>
+  </div>
+  <div class="flex-1 overflow-y-auto" id="cartItems">
+    <% if(cart.length === 0) { %>
+    <div class="empty-state">
+      <div class="text-muted mb-2"><%- icon('cart', 'w-8 h-8 mx-auto') %></div>
+      <p>Votre panier est vide</p>
+    </div>
+    <% } else { %>
+    <% cart.forEach(item => { %>
+    <div class="flex items-center gap-3.5 py-3.5 border-b border-border">
+      <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-2xl shrink-0"><%= item.image %></div>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-medium truncate"><%= item.name %></div>
+        <div class="text-sm text-accent-dark font-medium"><%= item.price.toFixed(2) %>€ × <%= item.qty %></div>
+      </div>
+      <button class="text-muted hover:text-danger" onclick="removeFromCart(<%= item.id %>)"><%- icon('trash', 'w-4 h-4') %></button>
+    </div>
+    <% }) %>
+    <% } %>
+  </div>
+  <div class="pt-5">
+    <div class="flex items-center justify-between font-semibold mb-4">
+      <span>Total</span>
+      <span id="cartTotal"><%= cart.reduce((s,i) => s+i.price*i.qty, 0).toFixed(2) %>€</span>
+    </div>
+    <a href="/user/checkout" class="btn-accent btn-full btn-lg">Commander</a>
+  </div>
+</div>
+
+<script>
+function renderCart(cart) {
+  const itemsEl = document.getElementById('cartItems');
+  const countEl = document.getElementById('cart-count');
+  const totalEl = document.getElementById('cartTotal');
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  if (countEl) countEl.textContent = count;
+  totalEl.textContent = total.toFixed(2) + '€';
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = '<div class="empty-state"><p class="text-muted">Votre panier est vide</p></div>';
+    return;
+  }
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="flex items-center gap-3.5 py-3.5 border-b border-border">
+      <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-2xl shrink-0">${item.image}</div>
+      <div class="flex-1 min-w-0">
+        <div class="text-sm font-medium truncate">${item.name}</div>
+        <div class="text-sm text-accent-dark font-medium">${item.price.toFixed(2)}€ × ${item.qty}</div>
+      </div>
+      <button class="text-muted hover:text-danger" onclick="removeFromCart(${item.id})"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 7h14"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M7 7l1 12a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-12"/></svg></button>
+    </div>
+  `).join('');
+}
+
+function addToCart(id, btn) {
+  const original = btn.innerHTML;
+  btn.textContent = 'Ajout...';
+  btn.disabled = true;
+  fetch('/user/cart/add', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ productId: id })
+  }).then(r => r.json()).then(d => {
+    if (d.success) {
+      btn.textContent = 'Ajouté ✓';
+      renderCart(d.cart);
+      setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
+    }
+  });
+}
+
+function removeFromCart(id) {
+  fetch('/user/cart/remove', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ productId: id })
+  }).then(r => r.json()).then(d => { if (d.success) renderCart(d.cart); });
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartPanel').classList.remove('translate-x-full');
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartPanel').classList.add('translate-x-full');
+}
+</script>
