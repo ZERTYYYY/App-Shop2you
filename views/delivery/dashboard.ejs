@@ -58,7 +58,7 @@
           <% if(job.status === 'en attente') { %>
           <button class="btn-accent btn-sm" onclick="acceptJob(this)">Accepter</button>
           <% } else { %>
-          <button class="btn-primary btn-sm" onclick="finishJob(this)">Livré ✓</button>
+          <button class="btn-primary btn-sm" onclick="finishJob(this)">Livré</button>
           <% } %>
         </div>
       </div>
@@ -90,7 +90,7 @@
 </div>
 <script>
 function acceptJob(btn) {
-  btn.textContent = 'Accepté ✓';
+  btn.textContent = 'Accepté';
   btn.className = 'btn-primary btn-sm';
   btn.onclick = function() { finishJob(this); };
   const badge = btn.parentElement.previousElementSibling.querySelector('.badge-accent, .badge-warning');
@@ -99,7 +99,7 @@ function acceptJob(btn) {
 function finishJob(btn) {
   const card = btn.closest('.card');
   card.style.opacity = '0.5';
-  btn.textContent = 'Livré ✓';
+  btn.textContent = 'Livré';
   btn.disabled = true;
 }
 </script>

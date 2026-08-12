@@ -164,8 +164,8 @@ app.get('/provider/invoices', requireRole('provider'), (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Shop2You lancé sur http://localhost:${PORT}`);
-  console.log(`   👤 User     : user@shop2you.com / 123456`);
-  console.log(`   🚗 Livreur  : livreur@shop2you.com / 123456`);
-  console.log(`   🏪 Vendeur  : vendeur@shop2you.com / 123456`);
+  console.log(`Shop2You lancé sur http://localhost:${PORT}`);
+  console.log(`   Client  : user@shop2you.com / 123456`);
+  console.log(`   Livreur : livreur@shop2you.com / 123456`);
+  console.log(`   Vendeur : vendeur@shop2you.com / 123456`);
 });

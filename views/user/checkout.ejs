@@ -91,7 +91,7 @@
         <% cart.forEach(item => { %>
         <div class="flex items-center justify-between py-3 first:pt-0">
           <div class="flex items-center gap-3">
-            <span class="text-2xl"><%= item.image %></span>
+            <div class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center text-cream font-serif text-sm font-semibold shrink-0"><%= item.name.charAt(0).toUpperCase() %></div>
             <div>
               <div class="text-sm font-medium"><%= item.name %></div>
               <div class="text-xs text-muted">Qté: <%= item.qty %></div>

@@ -14,7 +14,7 @@
     <% } else { %>
     <% cart.forEach(item => { %>
     <div class="flex items-center gap-3.5 py-3.5 border-b border-border">
-      <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-2xl shrink-0"><%= item.image %></div>
+      <div class="w-12 h-12 rounded-xl bg-ink flex items-center justify-center text-cream font-serif font-semibold shrink-0"><%= item.name.charAt(0).toUpperCase() %></div>
       <div class="flex-1 min-w-0">
         <div class="text-sm font-medium truncate"><%= item.name %></div>
         <div class="text-sm text-accent-dark font-medium"><%= item.price.toFixed(2) %>€ × <%= item.qty %></div>
@@ -50,7 +50,7 @@ function renderCart(cart) {
   }
   itemsEl.innerHTML = cart.map(item => `
     <div class="flex items-center gap-3.5 py-3.5 border-b border-border">
-      <div class="w-12 h-12 rounded-xl bg-cream flex items-center justify-center text-2xl shrink-0">${item.image}</div>
+      <div class="w-12 h-12 rounded-xl bg-ink flex items-center justify-center text-cream font-serif font-semibold shrink-0">${item.name.charAt(0).toUpperCase()}</div>
       <div class="flex-1 min-w-0">
         <div class="text-sm font-medium truncate">${item.name}</div>
         <div class="text-sm text-accent-dark font-medium">${item.price.toFixed(2)}€ × ${item.qty}</div>
@@ -70,7 +70,7 @@ function addToCart(id, btn) {
     body: JSON.stringify({ productId: id })
   }).then(r => r.json()).then(d => {
     if (d.success) {
-      btn.textContent = 'Ajouté ✓';
+      btn.textContent = 'Ajouté';
       renderCart(d.cart);
       setTimeout(() => { btn.innerHTML = original; btn.disabled = false; }, 1200);
     }

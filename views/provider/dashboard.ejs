@@ -47,12 +47,12 @@
           <tbody>
             <% user.products.forEach(p => { %>
             <tr>
-              <td class="td-cell"><div class="flex items-center gap-3"><span class="text-2xl"><%= p.image %></span><span class="font-medium"><%= p.name %></span></div></td>
+              <td class="td-cell"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-ink flex items-center justify-center text-cream font-serif text-sm font-semibold shrink-0"><%= p.name.charAt(0).toUpperCase() %></div><span class="font-medium"><%= p.name %></span></div></td>
               <td class="td-cell"><span class="badge-neutral"><%= p.category %></span></td>
               <td class="td-cell font-medium"><%= p.price.toFixed(2) %>€</td>
               <td class="td-cell">
                 <% if(p.stock <= 5) { %>
-                  <span class="text-danger font-medium"><%= p.stock %> ⚠</span>
+                  <span class="text-danger font-medium inline-flex items-center gap-1"><%= p.stock %> <%- icon('alert', 'w-3.5 h-3.5') %></span>
                 <% } else { %>
                   <span><%= p.stock %></span>
                 <% } %>
