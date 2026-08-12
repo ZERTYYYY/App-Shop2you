@@ -49,7 +49,16 @@ app.get('/signup', (req, res) => res.render('auth/signup', { error: null }));
 app.post('/signup', (req, res) => {
   const { name, email, password, role } = req.body;
   if (users.find(u => u.email === email)) return res.render('auth/signup', { error: 'Cet email est déjà utilisé.' });
-  const newUser = { id: users.length + 1, role: role || 'user', email, password, name, phone: '', city: '', address: '', avatar: null, orders: [], cards: [], addresses: [] };
+  const finalRole = role || 'user';
+  const base = { id: users.length + 1, role: finalRole, email, password, name, phone: '', city: '', address: '', gender: '', avatar: null };
+  let newUser;
+  if (finalRole === 'delivery') {
+    newUser = { ...base, stats: { trips: 0, rating: 0, time: '0m' }, vehicle: { type: '', brand: '', model: '', plate: '', color: '' }, jobs: [], history: [] };
+  } else if (finalRole === 'provider') {
+    newUser = { ...base, shopName: `${name} Store`, products: [], invoices: [] };
+  } else {
+    newUser = { ...base, orders: [], cards: [], addresses: [] };
+  }
   users.push(newUser);
   req.session.user = newUser;
   res.redirect(`/${newUser.role}/dashboard`);
