@@ -69,6 +69,14 @@ app.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+app.get('/settings', requireAuth, (req, res) => {
+  res.render('settings', { user: req.session.user });
+});
+
+app.get('/privacy', requireAuth, (req, res) => {
+  res.render('privacy', { user: req.session.user });
+});
+
 // ─── USER ────────────────────────────────────────────────────────────
 app.get('/user/dashboard', requireRole('user'), (req, res) => {
   res.render('user/dashboard', { user: req.session.user, products, cart: req.session.cart || [] });
@@ -96,13 +104,13 @@ app.post('/user/cart/add', requireRole('user'), (req, res) => {
   const existing = req.session.cart.find(i => i.id == productId);
   if (existing) existing.qty++;
   else req.session.cart.push({ ...product, qty: 1 });
-  res.json({ success: true, cartCount: req.session.cart.reduce((s, i) => s + i.qty, 0) });
+  res.json({ success: true, cart: req.session.cart, cartCount: req.session.cart.reduce((s, i) => s + i.qty, 0) });
 });
 
 app.post('/user/cart/remove', requireRole('user'), (req, res) => {
   const { productId } = req.body;
   req.session.cart = (req.session.cart || []).filter(i => i.id != productId);
-  res.json({ success: true });
+  res.json({ success: true, cart: req.session.cart, cartCount: req.session.cart.reduce((s, i) => s + i.qty, 0) });
 });
 
 app.post('/user/checkout/confirm', requireRole('user'), (req, res) => {

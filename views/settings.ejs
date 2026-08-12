@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop2You — Paramètres</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="app-shell">
+  <%- include('partials/sidebar', {user, page: 'settings'}) %>
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-title"><h1>Paramètres ⚙️</h1><p>Gérez vos préférences</p></div>
+    </div>
+
+    <div class="card" style="margin-bottom:24px">
+      <h3 style="margin-bottom:16px">Notifications</h3>
+      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
+        <span class="plabel">Notifications par e-mail</span>
+        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
+      </label>
+      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
+        <span class="plabel">Notifications push</span>
+        <input type="checkbox" checked style="accent-color:var(--gold); width:18px; height:18px;">
+      </label>
+      <label style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; cursor:pointer;">
+        <span class="plabel">Offres promotionnelles</span>
+        <input type="checkbox" style="accent-color:var(--gold); width:18px; height:18px;">
+      </label>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-bottom:16px">Préférences</h3>
+      <div class="profile-row"><span class="plabel">Langue</span><span class="pval">Français 🇫🇷</span></div>
+      <div class="profile-row"><span class="plabel">Devise</span><span class="pval">EUR (€)</span></div>
+      <div class="profile-row"><span class="plabel">Thème</span><span class="pval">Clair ☀️</span></div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

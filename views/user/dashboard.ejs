@@ -111,7 +111,7 @@
   <div class="cart-footer">
     <div class="cart-total">
       <span>Total</span>
-      <span><%= cart.reduce((s,i) => s+i.price*i.qty, 0).toFixed(2) %>€</span>
+      <span id="cartTotal"><%= cart.reduce((s,i) => s+i.price*i.qty, 0).toFixed(2) %>€</span>
     </div>
     <a href="/user/checkout" class="btn btn-gold btn-full btn-lg">Commander →</a>
   </div>
@@ -141,6 +141,32 @@ function filterCat(cat) {
   filterProducts();
 }
 
+function renderCart(cart) {
+  const itemsEl = document.getElementById('cartItems');
+  const countEl = document.getElementById('cart-count');
+  const totalEl = document.getElementById('cartTotal');
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+
+  countEl.textContent = count;
+  totalEl.textContent = total.toFixed(2) + '€';
+
+  if (cart.length === 0) {
+    itemsEl.innerHTML = '<div class="empty-state"><div class="emoji">🛒</div><p>Votre panier est vide</p></div>';
+    return;
+  }
+  itemsEl.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-icon">${item.image}</div>
+      <div class="cart-item-info">
+        <div class="name">${item.name}</div>
+        <div class="price">${item.price.toFixed(2)}€ × ${item.qty}</div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart(${item.id})">🗑️</button>
+    </div>
+  `).join('');
+}
+
 function addToCart(id, btn) {
   btn.textContent = '⏳ Ajout...';
   btn.disabled = true;
@@ -151,7 +177,7 @@ function addToCart(id, btn) {
   }).then(r => r.json()).then(d => {
     if (d.success) {
       btn.textContent = '✅ Ajouté !';
-      document.getElementById('cart-count').textContent = d.cartCount;
+      renderCart(d.cart);
       setTimeout(() => { btn.textContent = '+ Ajouter au panier'; btn.disabled = false; }, 1500);
     }
   });
@@ -162,7 +188,7 @@ function removeFromCart(id) {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({ productId: id })
-  }).then(() => location.reload());
+  }).then(r => r.json()).then(d => { if (d.success) renderCart(d.cart); });
 }
 
 function openCart() { document.getElementById('cartOverlay').classList.add('open'); document.getElementById('cartPanel').classList.add('open'); }
