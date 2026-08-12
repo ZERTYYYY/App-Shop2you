@@ -62,24 +62,26 @@ const categories = [
 ];
 
 // ─── STORES ──────────────────────────────────────────────────────────
-// Note démo : "logo" = badge généré (initiales + couleur), pas de vraie
-// image de marque — les vrais logos de ces enseignes sont des marques
-// déposées qu'on ne reproduit pas ici.
+// `logo` = vrai logo de l'enseigne (SVG téléchargé depuis Wikimedia Commons,
+// sous licence libre ou trop simple pour être protégé par le droit d'auteur).
+// Ce sont malgré tout des marques déposées : affichées ici à titre
+// d'identification (usage nominatif), pas en tant que partenaires officiels.
+// Les enseignes fictives (sans `logo`) retombent sur un badge initiales/couleur.
 const stores = [
-  { id: 1, name: 'Carrefour', category: 'alimentaire', initials: 'CA', color: '#0F5FA8', rating: 4.4, time: '25-35 min' },
-  { id: 2, name: 'Leclerc', category: 'alimentaire', initials: 'LE', color: '#1E6FD9', rating: 4.3, time: '30-40 min' },
-  { id: 3, name: 'Auchan', category: 'alimentaire', initials: 'AU', color: '#C1272D', rating: 4.2, time: '25-35 min' },
-  { id: 4, name: 'Lidl', category: 'alimentaire', initials: 'LI', color: '#0F5FA8', rating: 4.5, time: '20-30 min' },
+  { id: 1, name: 'Carrefour', category: 'alimentaire', logo: '/images/stores/carrefour.svg', initials: 'CA', color: '#0F5FA8', rating: 4.4, time: '25-35 min' },
+  { id: 2, name: 'Leclerc', category: 'alimentaire', logo: '/images/stores/leclerc.svg', initials: 'LE', color: '#1E6FD9', rating: 4.3, time: '30-40 min' },
+  { id: 3, name: 'Auchan', category: 'alimentaire', logo: '/images/stores/auchan.svg', initials: 'AU', color: '#C1272D', rating: 4.2, time: '25-35 min' },
+  { id: 4, name: 'Lidl', category: 'alimentaire', logo: '/images/stores/lidl.svg', initials: 'LI', color: '#0F5FA8', rating: 4.5, time: '20-30 min' },
 
   { id: 5, name: "Burger's", category: 'restauration', initials: 'BU', color: '#9C3F1F', rating: 4.3, time: '15-25 min' },
-  { id: 6, name: "McDonald's", category: 'restauration', initials: 'MC', color: '#C1272D', rating: 4.1, time: '15-25 min' },
-  { id: 7, name: 'Burger King', category: 'restauration', initials: 'BK', color: '#C1552E', rating: 4.2, time: '20-30 min' },
+  { id: 6, name: "McDonald's", category: 'restauration', logo: '/images/stores/mcdonalds.svg', initials: 'MC', color: '#C1272D', rating: 4.1, time: '15-25 min' },
+  { id: 7, name: 'Burger King', category: 'restauration', logo: '/images/stores/burgerking.svg', initials: 'BK', color: '#C1552E', rating: 4.2, time: '20-30 min' },
   { id: 8, name: 'Rôtisserie du Poulet', category: 'restauration', initials: 'RP', color: '#B8862E', rating: 4.6, time: '25-35 min' },
   { id: 9, name: 'Boulangerie Paul', category: 'restauration', initials: 'PA', color: '#8A6A3B', rating: 4.7, time: '15-20 min' },
 
-  { id: 10, name: 'Sephora', category: 'cosmetique', initials: 'SE', color: '#211D1A', rating: 4.6, time: '30-40 min' },
-  { id: 11, name: 'Yves Rocher', category: 'cosmetique', initials: 'YR', color: '#3F7D58', rating: 4.5, time: '30-40 min' },
-  { id: 12, name: 'Marionnaud', category: 'cosmetique', initials: 'MA', color: '#8B3A5E', rating: 4.4, time: '30-40 min' },
+  { id: 10, name: 'Sephora', category: 'cosmetique', logo: '/images/stores/sephora.svg', initials: 'SE', color: '#211D1A', rating: 4.6, time: '30-40 min' },
+  { id: 11, name: 'Yves Rocher', category: 'cosmetique', logo: '/images/stores/yvesrocher.svg', initials: 'YR', color: '#3F7D58', rating: 4.5, time: '30-40 min' },
+  { id: 12, name: 'Marionnaud', category: 'cosmetique', logo: '/images/stores/marionnaud.svg', initials: 'MA', color: '#8B3A5E', rating: 4.4, time: '30-40 min' },
 
   { id: 13, name: 'Fashion Lyon Store', category: 'mode', initials: 'FL', color: '#C1552E', rating: 4.8, time: '35-45 min' },
   { id: 14, name: 'SneakersPro', category: 'mode', initials: 'SP', color: '#211D1A', rating: 4.6, time: '35-45 min' },

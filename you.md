@@ -8,7 +8,7 @@
 - 🚗 **Delivery (Livreur)** — voit ses courses en cours, son historique, gère son véhicule.
 - 🏪 **Provider (Vendeur)** — gère ses produits, ses factures, son profil boutique.
 
-> Les enseignes (Carrefour, Leclerc, McDonald's, Sephora...) sont des noms réels utilisés à titre d'exemple pour la démo ; leurs "logos" sont des badges générés (initiales + couleur), pas de vraies images de marque — voir la section Interface.
+> Les enseignes (Carrefour, Leclerc, McDonald's, Sephora...) sont des noms réels utilisés à titre d'exemple pour la démo. 9 d'entre elles affichent leur vrai logo (SVG récupéré sur Wikimedia Commons, sous licence libre ou trop simple pour être protégé par le droit d'auteur) ; les enseignes fictives et celles dont le logo réel n'était disponible qu'en usage non-libre affichent un badge généré (initiales + couleur). Ce sont malgré tout des marques déposées, affichées à titre d'identification (usage nominatif comme le font les vraies apps de livraison), pas comme partenariats officiels — voir la section Interface.
 
 C'est une app **monolithique server-rendered** (pas de frontend séparé type React/Vue) : Express génère le HTML côté serveur avec le moteur de templates EJS.
 
@@ -90,8 +90,13 @@ shop2you-app/
 │       ├── sidebar.ejs     # Navigation latérale, changeante selon le rôle
 │       └── cart-panel.ejs  # Panneau panier + JS (add/remove/render), partagé dashboard + store
 └── public/
-    └── css/
-        style.css          # Généré par Tailwind — ne pas éditer directement
+    ├── css/
+    │   └── style.css          # Généré par Tailwind — ne pas éditer directement
+    └── images/
+        ├── logo-icon.png       # Icône Shop2You (fournie par l'utilisateur, fond transparent)
+        ├── logo-full.png       # Logo complet + wordmark (non utilisé dans l'UI actuellement)
+        ├── favicon.png
+        └── stores/             # Vrais logos d'enseignes (voir note licence ci-dessus)
 ```
 
 > Note : le dossier `Shop2you/` à la racine est une copie plus ancienne du projet avec son propre dépôt git imbriqué (et un sous-dossier `Shopopop/`). Il ne fait pas partie de l'app active servie par `server.js` — c'est probablement un reliquat à nettoyer ou archiver. De même, un dossier au nom littéral `{public/{css,js,images},views/{user,delivery,provider,auth},routes,data}` traîne à la racine : c'est un artefact d'une commande `mkdir` mal interprétée (accolades non développées), sans contenu utile.
@@ -145,7 +150,7 @@ Défini dans `data/mockData.js`, quatre exports :
   - `delivery` : `stats{}`, `vehicle{}`, `jobs[]` (courses en cours), `history[]`
   - `provider` : `shopName`, `products[]`, `invoices[]` — **catalogue distinct** de son propre inventaire (dashboard vendeur), sans lien avec `products` ci-dessous
 - **`categories`** — `{ id, label }`, ex. `{ id: 'alimentaire', label: 'Alimentaire' }`, utilisées pour les onglets de filtre du dashboard client
-- **`stores`** — les enseignes/magasins : `{ id, name, category, initials, color, rating, time }`. `initials`/`color` servent à générer le badge-logo (pas de vraie image de marque)
+- **`stores`** — les enseignes/magasins : `{ id, name, category, initials, color, rating, time, logo? }`. `logo` (optionnel) pointe vers un vrai fichier SVG dans `public/images/stores/` ; sans ce champ, l'UI retombe sur un badge généré (`initials`/`color`)
 - **`products`** — catalogue global affiché aux clients, chaque produit rattaché à un magasin via `storeId` : `{ id, storeId, name, price, category, image (emoji), rating, reviews, provider, description }`
 
 Tout est statique/en dur : pas d'écriture persistante sauf en mémoire process (perdu au redémarrage). Le panier référence directement les objets de `products` par `id`, donc les identifiants doivent rester uniques sur l'ensemble du catalogue (tous magasins confondus).
@@ -157,6 +162,7 @@ Tout est statique/en dur : pas d'écriture persistante sauf en mémoire process 
 - **Icônes** : petit set SVG inline maison (`lib/icons.js`, exposé comme `icon()` dans toutes les vues via `app.locals.icon`) pour la navigation et les actions UI. Les emojis produits (`👟`, `🧢`...) viennent des données mock et sont conservés tels quels.
 - La sidebar (`views/partials/sidebar.ejs`) est en fond sombre (`ink`), adapte ses liens selon `user.role`, et devient un panneau off-canvas sur mobile (`toggleSidebar()`, bouton `.menu-toggle` fixe).
 - Textes/labels en français (l'app cible un public francophone, ex. Lyon dans les données de démo).
+- **Logos d'enseignes** (`public/images/stores/*.svg`) : téléchargés depuis Wikimedia Commons pour 9 magasins (Carrefour, Leclerc, Auchan, Lidl, McDonald's, Burger King, Sephora, Yves Rocher, Marionnaud) — fichiers librement réutilisables sur le plan du droit d'auteur (licence libre ou logo trop simple pour être protégé), mais ce sont **toujours des marques déposées** : les afficher reste un usage nominatif (identifier l'enseigne), pas un partenariat officiel, à garder en tête si le projet doit un jour devenir public/commercial. Les enseignes fictives et celles sans logo librement réutilisable (Burger's, Rôtisserie du Poulet, Boulangerie Paul, les 3 boutiques Mode) utilisent le badge généré.
 
 ## Limites connues / points à garder en tête
 

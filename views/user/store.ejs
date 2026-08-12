@@ -13,7 +13,13 @@
 
     <div class="flex items-start justify-between gap-4 mb-8 flex-wrap">
       <div class="flex items-center gap-4">
+        <% if (store.logo) { %>
+        <div class="w-16 h-16 rounded-2xl bg-white shadow-soft flex items-center justify-center p-3 shrink-0">
+          <img src="<%= store.logo %>" alt="<%= store.name %>" class="w-full h-full object-contain">
+        </div>
+        <% } else { %>
         <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-semibold shrink-0" style="background:<%= store.color %>"><%= store.initials %></div>
+        <% } %>
         <div>
           <h1><%= store.name %></h1>
           <div class="text-sm text-muted mt-1 flex items-center gap-1.5">
