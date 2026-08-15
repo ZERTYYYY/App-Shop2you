@@ -42,9 +42,9 @@
     <% } else { %>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       <% storeProducts.forEach(p => { %>
-      <div class="card !p-0 overflow-hidden flex flex-col">
+      <div class="card card-hover !p-0 overflow-hidden flex flex-col">
         <div class="h-36 flex items-center justify-center bg-white/25 border-b border-white/40">
-          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-semibold" style="background:<%= store.color %>"><%= p.name.charAt(0).toUpperCase() %></div>
+          <div class="w-16 h-16 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-semibold transition-transform duration-200 hover:scale-110" style="background:<%= store.color %>"><%= p.name.charAt(0).toUpperCase() %></div>
         </div>
         <div class="p-5 flex flex-col flex-1">
           <div class="font-medium text-sm mb-1"><%= p.name %></div>

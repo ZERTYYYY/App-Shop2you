@@ -18,19 +18,19 @@
     </div>
 
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-accent-light text-accent-dark"><%- icon('car','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.stats.trips %></div><div class="text-xs text-muted">Courses totales</div></div>
       </div>
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-success-light text-success"><%- icon('star','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.stats.rating %></div><div class="text-xs text-muted">Note moyenne</div></div>
       </div>
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-warning-light text-warning"><%- icon('clock','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.stats.time %></div><div class="text-xs text-muted">Temps moyen</div></div>
       </div>
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-danger-light text-danger"><%- icon('list','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.jobs.length %></div><div class="text-xs text-muted">Missions</div></div>
       </div>

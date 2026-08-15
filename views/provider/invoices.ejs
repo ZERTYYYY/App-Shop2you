@@ -15,15 +15,15 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-success-light text-success"><%- icon('wallet','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.invoices.filter(i=>i.status==='payée').reduce((s,i)=>s+i.amount,0).toFixed(2) %>€</div><div class="text-xs text-muted">Total encaissé</div></div>
       </div>
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-warning-light text-warning"><%- icon('clock','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.invoices.filter(i=>i.status==='en attente').reduce((s,i)=>s+i.amount,0).toFixed(2) %>€</div><div class="text-xs text-muted">En attente</div></div>
       </div>
-      <div class="card !p-5 flex items-center gap-3.5">
+      <div class="card card-hover group !p-5 flex items-center gap-3.5">
         <div class="stat-icon bg-accent-light text-accent-dark"><%- icon('file','w-5 h-5') %></div>
         <div><div class="text-xl font-semibold"><%= user.invoices.length %></div><div class="text-xs text-muted">Total factures</div></div>
       </div>

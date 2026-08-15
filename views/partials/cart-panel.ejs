@@ -41,7 +41,12 @@ function renderCart(cart) {
   const count = cart.reduce((s, i) => s + i.qty, 0);
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
 
-  if (countEl) countEl.textContent = count;
+  if (countEl) {
+    countEl.textContent = count;
+    countEl.classList.remove('animate-bump');
+    void countEl.offsetWidth;
+    countEl.classList.add('animate-bump');
+  }
   totalEl.textContent = total.toFixed(2) + '€';
 
   if (cart.length === 0) {
