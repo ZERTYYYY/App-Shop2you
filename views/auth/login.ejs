@@ -4,7 +4,7 @@
 <body>
 <div class="min-h-screen flex">
   <!-- Left: brand -->
-  <div class="hidden lg:flex lg:w-5/12 bg-ink text-cream flex-col justify-between p-12">
+  <div class="hidden lg:flex lg:w-5/12 bg-ink/80 backdrop-blur-2xl border-r border-white/10 text-cream flex-col justify-between p-12">
     <div class="flex items-center gap-2.5">
       <img src="/images/logo-icon.png" alt="Shop2You" class="w-9 h-9 object-contain">
       <span class="font-serif text-lg font-semibold">Shop2You</span>
@@ -32,7 +32,7 @@
 
   <!-- Right: form -->
   <div class="flex-1 flex items-center justify-center p-6 sm:p-10">
-    <div class="w-full max-w-sm">
+    <div class="w-full max-w-sm card !p-8">
       <div class="lg:hidden flex items-center gap-2.5 mb-8">
         <div class="w-9 h-9 rounded-full bg-ink flex items-center justify-center p-1.5 shrink-0">
           <img src="/images/logo-icon.png" alt="Shop2You" class="w-full h-full object-contain">
@@ -44,10 +44,10 @@
       <p class="text-muted text-sm mb-6">Connectez-vous à votre compte</p>
 
       <% if (error) { %>
-        <div class="mb-5 rounded-xl bg-danger-light text-danger text-sm px-4 py-3"><%= error %></div>
+        <div class="mb-5 rounded-xl bg-danger-light/70 backdrop-blur-sm border border-danger/10 text-danger text-sm px-4 py-3"><%= error %></div>
       <% } %>
 
-      <div class="mb-6 rounded-xl border border-border p-4">
+      <div class="mb-6 rounded-xl border border-white/50 bg-white/20 backdrop-blur-sm p-4">
         <p class="text-xs font-medium uppercase tracking-wide text-muted mb-3">Comptes démo</p>
         <div class="flex flex-wrap gap-2">
           <button type="button" class="badge-neutral hover:border-ink transition-colors" onclick="fillDemo('user@shop2you.com','123456')">Client</button>
